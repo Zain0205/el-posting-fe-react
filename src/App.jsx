@@ -1,9 +1,24 @@
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import Register from "./pages/Register";
+import Login from "./pages/Login";
+
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Login />
+  },
+  {
+    path: "/register",
+    element: <Register />
+  }
+])
+
 function App() {
   return (
     <>
-      <div className="text-center py-10">
-        <h1 className="text-2xl font-bold">EL-POSTING COMING SOON.....</h1>
-      </div>
+      <RouterProvider router={router} />
     </>
   );
 }
