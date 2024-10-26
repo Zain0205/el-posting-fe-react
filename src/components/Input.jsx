@@ -5,7 +5,7 @@ function Input({label, type, id, name, placeholder}) {
        <label className="block text-sm font-medium text-gray-300" htmlFor="email">
         {label}
         </label>
-        <input className="w-full px-4 py-2 mt-2 text-gray-900 bg-gray-700 border border-gray-600 rounded-md focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" type={type} placeholder={placeholder} id={id} name={name} />
+        <input className="w-full px-4 py-2 mt-2 text-white bg-gray-700 border border-gray-600 rounded-md focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500" type={type} placeholder={placeholder} id={id} name={name} />
       </div>
     </>
   );
