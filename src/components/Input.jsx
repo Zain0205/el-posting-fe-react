@@ -1,7 +1,7 @@
 function Input({label, id, ...props}) {
   return (
     <>
-      <div className="flex flex-col text-white gap-y-2 mb-4">
+      <div className="flex flex-col text-white gap-y-1 mb-4">
        <label className="block text-sm font-medium text-gray-300" htmlFor={id}>
         {label}
         </label>
