@@ -11,7 +11,7 @@ function Login() {
     password: null,
   });
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleLoginData = (fieldname, e) => {
     const temp = { ...userLogin };
@@ -23,28 +23,25 @@ function Login() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
-    try{
-      const response = await axios.post('/auth/login', userLogin)
-      
-      if(response.status !== 200){
-        throw new Error("Failed to Login")
+    try {
+      const response = await axios.post("/auth/login", userLogin);
+
+      if (response.status !== 200) {
+        throw new Error("Failed to Login");
       }
 
-      if(response.data){
-        localStorage.setItem("token", response.data.token)
+      if (response.data) {
+        localStorage.setItem("token", response.data.token);
       }
 
-      if(localStorage.getItem("token")){
-        navigate('/home')
-      } else {
-        navigate('/')
-      }
+      if (localStorage.getItem("token")) {
+        navigate("/home");
+      } 
 
-
-    } catch(err){
-      console.error(err)
+    } catch (err) {
+      console.error(err);
     }
-  }
+  };
 
   return (
     <section className="h-screen bg-background flex items-center justify-center px-5 flex-col gap-y-5">
