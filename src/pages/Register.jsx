@@ -5,21 +5,19 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import axios from "../lib/axios";
 
-
 function Register() {
+  const navigate = useNavigate()
+
   const [users, setUsers] = useState({
     username: null,
     email: null,
     password: null
   })
 
-  const navigate = useNavigate()
-
   const handleRegister = (fieldname, e) => {
     const temp = {...users}
 
     temp[fieldname] = e.target.value
-    console.log(temp)
     setUsers(temp)
   }
 
@@ -35,8 +33,6 @@ function Register() {
       console.error(err)
     }
   }
-
-  
 
   return (
     <section className="h-screen bg-background flex items-center justify-center px-5 flex-col gap-y-5">
@@ -74,20 +70,25 @@ function Register() {
             id="r-username"
             label="Username"
             placeholder="Username"
+            required
           />
           <Input
             onChange={(e) => handleRegister("email", e)}
+            type="email"
             name="email-f"
             id="r-email"
             label="Email"
             placeholder="Email"
+            required
           />
           <Input
             onChange={(e) => handleRegister("password", e)}
             name="password-f"
+            type="password"
             id="r-password"
             label="Password"
             placeholder="Password"
+            required
           />
           <Button>Register</Button>
           <p className="text-center mt-4  text-white">
