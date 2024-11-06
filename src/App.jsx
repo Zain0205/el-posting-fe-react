@@ -3,6 +3,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import AddPostForm from "./pages/AddPostForm";
+import Profile from "./pages/Profile";
 
 
 
@@ -22,7 +23,11 @@ const router = createBrowserRouter([
   {
     path: "/add-post",
     element: <AddPostForm />
-  }
+  },
+  {
+    path: "/profile",
+    element: <Profile />
+  },
 ])
 
 function App() {
