@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 
 function PostForm() {
   const [post, setPost] = useState({
-    user_id: localStorage.getItem("id"),
+    user_id: null,
     content: null,
     img_url: null,
   });
@@ -45,11 +45,16 @@ function PostForm() {
       formData.append("content", post.content);
       formData.append("img_url", post.img_url);
 
-      const response = await axios.post("/post/create", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      const response = await axios.post(
+        "/post/create",
+        formData,
+        { withCredentials: true },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       if (response.status === 201) {
         console.log(response.data);
@@ -59,14 +64,12 @@ function PostForm() {
     } catch (err) {
       console.error(err);
     }
-    
-
-  }
+  };
 
   return (
     <form
-    onSubmit={handlePostSubmit}
-      className="pb-20 lg:pb-0"
+      onSubmit={handlePostSubmit}
+      className="pb-20 lg:pb-0 max-w-lg mx-auto w-full"
       action=""
     >
       <label
@@ -101,6 +104,7 @@ function PostForm() {
         onChange={(e) => handlePostData("content", e)}
         placeholder="Add your description..."
         label="Post Description"
+        value={post.content}
         textarea
       />
       <Button>Post</Button>

@@ -1,7 +1,7 @@
 
 function Recomendation() {
   return (
-    <section className="hidden border-l fixed right-0 bg-background h-screen border-gray-900 shadow-lg lg:flex py-3 lg:top-0 lg:w-96 lg:flex-col lg:py-5 lg:justify-between z-100">
+    <section className="hidden border-l xl:w-1/2 lg:w-2/3 h-screen border-gray-900 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100">
       <div className="px-5 text-white">
         <h1 className="font-roboto text-2xl mb-2">Rekomendasi</h1>
         <RecomendationCard />

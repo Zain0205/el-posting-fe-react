@@ -4,6 +4,8 @@ import Recomendation from "../components/Recomendation";
 import PostCard from "../components/PostCard";
 import { useEffect, useState } from "react";
 import axios from "../lib/axios";
+import Cookies from "js-cookie";
+import { LuLogOut } from "react-icons/lu";
 
 function Home() {
   const [postList, setPostList] = useState([]);
@@ -27,13 +29,17 @@ function Home() {
 
   return (
     <>
-      {!localStorage.getItem("token") ? (
+      {!Cookies.get("token") ? (
         <Navigate to="/" />
       ) : (
-        <section className="min-h-screen flex items-center bg-background lg:pl-72 lg:pr-96">
+        <section className="min-h-screen flex bg-background lg:pl-72 ">
           <Navbar />
-          <div className="min-h-screen p-5 lg:px-56 w-full">
-            <h1 className="text-white mx-auto max-w-lg text-2xl font-roboto tracking-wide">HomeFeed</h1>
+          <div className="h-screen p-5 w-full overflow-scroll">
+            <div className="text-white flex items-center justify-between w-full lg:hidden">
+              <h1 className="font-roboto text-xl">HomeFeed</h1>
+              <LuLogOut className="text-xl" />
+            </div>
+            <h1 className="text-white hidden lg:block mx-auto max-w-lg text-2xl font-roboto tracking-wide">HomeFeed</h1>
             {postList.map((post) => (
               <PostCard
                 key={post.id}
