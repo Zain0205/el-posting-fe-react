@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import axios from "../lib/axios";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 
 function Login() {
   const [userLogin, setUserLogin] = useState({
@@ -26,22 +27,16 @@ function Login() {
 
     try {
       const response = await axios.post("/auth/login", userLogin);
-      const token = response.data.token;
 
       if (response.status !== 200) {
         throw new Error("Failed to Login");
       }
 
       if (response.data) {
-        const decoded = jwtDecode(token);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("id", decoded.id);
-        console.log(response.data);
+        Cookies.set("token", response.data.token);
       }
 
-      if (localStorage.getItem("token")) {
-        navigate("/home");
-      }
+      navigate("/home");
     } catch (err) {
       console.error(err);
     }
