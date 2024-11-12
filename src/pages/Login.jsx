@@ -33,6 +33,9 @@ function Login() {
       }
 
       if (response.data) {
+        const decoded = jwtDecode(response.data.token);
+        console.log(decoded);
+        Cookies.set("id", decoded.id);
         Cookies.set("token", response.data.token);
       }
 
