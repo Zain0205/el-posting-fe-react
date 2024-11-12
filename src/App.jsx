@@ -5,37 +5,31 @@ import Home from "./pages/Home";
 import AddPostForm from "./pages/AddPostForm";
 import Profile from "./pages/Profile";
 
-
-
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Login />
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register />
+    element: <Register />,
   },
   {
     path: "/home",
-    element: <Home />
+    element: <Home />,
   },
   {
     path: "/add-post",
-    element: <AddPostForm />
+    element: <AddPostForm />,
   },
   {
-    path: "/profile",
-    element: <Profile />
+    path: "/profile/:id",
+    element: <Profile />,
   },
-])
+]);
 
 function App() {
-  return (
-    <>
-      <RouterProvider router={router} />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
