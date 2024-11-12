@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Link, Navigate, useParams } from "react-router-dom";
 import Navbar from "../components/Navbar";
 import Recomendation from "../components/Recomendation";
 import Cookies from "js-cookie";
@@ -8,15 +8,19 @@ import { useEffect, useState } from "react";
 import axios from "../lib/axios";
 
 export default function Profile() {
+  const { id } = useParams();
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
+  const [profileOwner, setProfileOwner] = useState(false);
 
   useEffect(() => {
     const handleGetUser = async () => {
       try {
-        const response = await axios.get("/profile/user", { withCredentials: true });
+        const response = await axios.get(`/profile/user/${id}`);
         setUser(response.data);
-        console.log(response);
+
+        const loggedUserId = Cookies.get("id");
+        setProfileOwner(response.data.id === parseInt(loggedUserId));
       } catch (error) {
         console.error("Error getting user data:", error);
       }
@@ -24,8 +28,7 @@ export default function Profile() {
 
     const handleGetPost = async () => {
       try {
-        const response = await axios.get("/post/user/feed", {withCredentials: true});
-        console.log(response.data);
+        const response = await axios.get(`/post/user/feed/${id}`);
         if (response.status === 200) {
           setPosts(response.data);
         }
@@ -37,16 +40,14 @@ export default function Profile() {
 
     handleGetPost();
     handleGetUser();
-  }, []);
-
-  console.log(user);
+  }, [id]);
 
   return (
     <>
       {!Cookies.get("token") ? (
         <Navigate to="/" />
       ) : (
-        <section className="min-h-screen flex bg-background lg:pl-72">
+        <section className="min-h-screen flex bg-background md:pl-72">
           <Navbar />
           <div className="h-screen overflow-scroll w-full pb-7">
             <div className="w-full h-96 relative flex justify-center items-center">
@@ -83,13 +84,15 @@ export default function Profile() {
             </div>
 
             <div className="px-5 my-5">
-              {true ? (
+              {!profileOwner ? (
                 <div className="flex gap-x-5">
                   <Button>Follow</Button>
                   <Button>Message</Button>
                 </div>
               ) : (
-                <Button>Edit Profile</Button>
+                <Link to="/edit">
+                  <Button>Edit Profile</Button>
+                </Link>
               )}
             </div>
 
@@ -115,7 +118,6 @@ export default function Profile() {
               </div>
             </div>
           </div>
-
           <Recomendation />
         </section>
       )}
