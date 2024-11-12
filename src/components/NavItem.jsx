@@ -15,10 +15,10 @@ function NavItem({ children, label, to }) {
           whileHover={{
             y: -5,
           }}
-          className="flex flex-col items-center text-center text-white lg:flex-row lg:hover:bg-gradient-to-r from-teal-400 lg:py-3 to-secondaryDark lg:px-5"
+          className="flex flex-col items-center text-center text-white md:flex-row md:hover:bg-gradient-to-r from-teal-400 md:py-3 to-secondaryDark md:px-5"
         >
           {children}
-          <span className="text-sm mt-1 lg:ml-3 font-semibold text-dark group-hover:text-primary lg:group-hover:text-white">{label}</span>
+          <span className="text-sm mt-1 lg:ml-3 font-semibold text-dark group-hover:text-primary md:group-hover:text-white">{label}</span>
         </motion.div>
       </Link>
     </>
