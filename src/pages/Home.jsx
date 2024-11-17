@@ -46,8 +46,10 @@ function Home() {
                 postId={post.id}
                 userId={post.user_id}
                 content={post.content}
+                profile={post.profile_img}
                 img={post.img_url}
                 username={post.username}
+                time={post.created_at}
                 like={post.like_count}
               />
             ))}
