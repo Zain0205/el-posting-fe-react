@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Home from "./pages/Home";
 import AddPostForm from "./pages/AddPostForm";
 import Profile from "./pages/Profile";
+import ProfileEdit from "./pages/ProfileEdit";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,10 @@ const router = createBrowserRouter([
     path: "/profile/:id",
     element: <Profile />,
   },
+  {
+    path: "/edit/user",
+    element: <ProfileEdit />,
+  }
 ]);
 
 function App() {

@@ -3,20 +3,21 @@ import Navbar from "../components/Navbar";
 import Recomendation from "../components/Recomendation";
 import Cookies from "js-cookie";
 import defaultProfile from "../assets/images/defaultProfile.png";
-import Button from "../components/Button";
 import { useEffect, useState } from "react";
 import axios from "../lib/axios";
+import { motion } from "framer-motion";
 
 export default function Profile() {
   const { id } = useParams();
   const [user, setUser] = useState({});
   const [posts, setPosts] = useState([]);
   const [profileOwner, setProfileOwner] = useState(false);
+  const [isFollowing, setIsFollowing] = useState(true);
 
   useEffect(() => {
     const handleGetUser = async () => {
       try {
-        const response = await axios.get(`/profile/user/${id}`);
+        const response = await axios.get(`/profile/check/${id}`);
         setUser(response.data);
 
         const loggedUserId = Cookies.get("id");
@@ -40,7 +41,56 @@ export default function Profile() {
 
     handleGetPost();
     handleGetUser();
+    if (!profileOwner) {
+      handleGetFollowStatus();
+    }
   }, [id]);
+
+  const handleGetFollowStatus = async () => {
+    const followerId = Cookies.get("id");
+    const followingId = id;
+
+    try {
+      const response = await axios.get(`/follow/status/${followerId}/${followingId}`);
+      setIsFollowing(response.data.isFollowing);
+    } catch (err) {
+      console.error("error getting follow status");
+    }
+  };
+
+  const handleFollowUser = async () => {
+    const payload = {
+      userFollowing: Cookies.get("id"),
+      userFollowed: id,
+    };
+
+    try {
+      const response = await axios.post("/follow/add", payload);
+      if (response.status === 200) {
+        setUser({ ...user, follower_count: user.follower_count + 1 });
+        await handleGetFollowStatus();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleUnfollowuser = async () => {
+    const payload = {
+      userFollowing: Cookies.get("id"),
+      userFollowed: id,
+    };
+
+    try {
+      const response = await axios.post("/follow/remove", payload);
+      if (response.status === 200) {
+        setUser({ ...user, follower_count: user.follower_count - 1 });
+        await handleGetFollowStatus();
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <>
@@ -49,73 +99,100 @@ export default function Profile() {
       ) : (
         <section className="min-h-screen flex bg-background md:pl-72">
           <Navbar />
-          <div className="h-screen overflow-scroll w-full pb-7">
-            <div className="w-full h-96 relative flex justify-center items-center">
-              <img
-                src={defaultProfile}
-                className="w-full h-full object-cover"
-                alt=""
-              />
-              <div className="h-32 w-32 overflow-hidden rounded-full absolute -bottom-12 lg:-bottom-16 flex justify-center items-center">
+          <div className="h-screen text-white overflow-scroll w-full pb-7">
+            <motion.div
+              className="max-w-xl w-full mx-auto shadow-md rounded-lg overflow-hidden"
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              transition={{ duration: 1 }}
+            >
+              {/* Header */}
+              <div className="relative">
                 <img
-                  src={defaultProfile}
-                  className="object-cover"
-                  alt=""
+                  src={user.img_url ? `http://localhost:3000${user.img_url}` : defaultProfile}
+                  alt={`profile`}
+                  className="w-32 h-32 rounded-full border-4 border-white mx-auto mt-6"
                 />
               </div>
-            </div>
-            <div className="text-white gap-x-10 flex justify-center mt-20 px-5">
-              <h1 className="text-2xl font-semibold font-roboto">{user.username}</h1>
-            </div>
 
-            <div className="flex justify-center mt-5 px-5 gap-x-10 text-center">
-              <div>
-                <h3 className="font-semibold text-lg text-white">Follower</h3>
-                <p className="text-sm text-gray-400">{user.follower_count}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg text-white">Following</h3>
-                <p className="text-sm text-gray-400">{user.following_count}</p>
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg text-white">Posts</h3>
-                <p className="text-sm text-gray-400">{posts.length}</p>
-              </div>
-            </div>
+              {/* Profile Info */}
+              <div className="text-center px-6 py-4">
+                <h1 className="text-xl font-semibold text-white">{user.username}</h1>
+                <p className="text-gray-600 text-sm mt-2">{user.bio ?? "Add Bio"}</p>
 
-            <div className="px-5 my-5">
-              {!profileOwner ? (
-                <div className="flex gap-x-5">
-                  <Button>Follow</Button>
-                  <Button>Message</Button>
+                <div className="flex justify-center items-center gap-6 mt-4">
+                  <div className="text-center flex items-center gap-x-2">
+                    <p className="font-bold text-white">{user.follower_count}</p>
+                    <p className="text-gray-500 text-sm">Followers</p>
+                  </div>
+                  <div className="text-center flex items-center gap-x-2">
+                    <p className="font-bold text-white">{user.following_count}</p>
+                    <p className="text-gray-500 text-sm">Following</p>
+                  </div>
+                  <div className="text-center flex items-center gap-x-2">
+                    <p className="font-bold text-white">{posts.length}</p>
+                    <p className="text-gray-500 text-sm">Posts</p>
+                  </div>
                 </div>
-              ) : (
-                <Link to="/edit">
-                  <Button>Edit Profile</Button>
-                </Link>
-              )}
-            </div>
-
-            <div className="px-5 text-center">
-              <p className="text-sm text-gray-400 mt-2">{user.bio ? user.bio : "add bio"}</p>
-            </div>
-
-            <div className="mt-10 px-5">
-              <h2 className="text-xl font-semibold text-white">Recent Posts</h2>
-              <div className="grid grid-cols-3 gap-4 mt-5">
-                {/* Map through the posts array to render posts */}
-                {posts.map((post) => {
-                  return (
-                    <div className="relative h-40 w-full bg-gray-300 overflow-hidden">
-                      <img
-                        src={`http://localhost:3000${post.img_url}`}
-                        alt="Post"
-                        className="object-cover w-full h-full"
-                      />
-                    </div>
-                  );
-                })}
               </div>
+
+              {/* Action Button */}
+              <div className="px-6 pb-6">
+                {profileOwner ? (
+                  <Link to={`/edit/user`}>
+                    <motion.button
+                      className={`w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-md shadow-md hover:bg-blue-600 focus:outline-none`}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Edit Profile
+                    </motion.button>
+                  </Link>
+                ) : (
+                  <div className="flex gap-x-5 mt-2">
+                    <motion.button
+                      className={`w-full py-2 px-4 ${isFollowing ? "bg-gray-200 hover:bg-gray-300" : "bg-blue-500 hover:bg-blue-600 text-white"} text-gray-800 font-bold rounded-md shadow-md focus:outline-none`}
+                      onClick={isFollowing ? handleUnfollowuser : handleFollowUser}
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {isFollowing ? "Unfollow" : "Follow"}
+                    </motion.button>
+                    <motion.button
+                      className="w-full py-2 px-4 bg-gray-200 text-gray-800 font-bold rounded-md shadow-md hover:bg-gray-300 focus:outline-none"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Message
+                    </motion.button>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+            {/* Posts Section */}
+            <div className="mt-6 w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 px-2">
+              {posts.map((post) => (
+                <motion.div
+                  key={post.id}
+                  className="bg-white shadow-md cursor-pointer rounded-lg overflow-hidden"
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <img
+                    src={`http://localhost:3000${post.img_url}`}
+                    alt={post.caption}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-4">
+                    <p className="text-sm text-gray-800 font-semibold">{post.caption}</p>
+                    <div className="flex justify-between text-gray-600 text-xs mt-2">
+                      <span>❤️ {post.like_count} Likes</span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </div>
           <Recomendation />
