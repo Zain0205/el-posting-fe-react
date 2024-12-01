@@ -6,6 +6,7 @@ import AddPostForm from "./pages/AddPostForm";
 import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
 import ChatPage from "./pages/ChatPage";
+import ForgotPassword from "./pages/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,10 @@ const router = createBrowserRouter([
     path: "/chat",
     element: <ChatPage />,
   },
+  {
+    path: "forgot-password",
+    element: <ForgotPassword />,
+  }
 ]);
 
 function App() {
