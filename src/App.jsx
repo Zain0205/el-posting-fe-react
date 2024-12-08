@@ -7,6 +7,7 @@ import Profile from "./pages/Profile";
 import ProfileEdit from "./pages/ProfileEdit";
 import ChatPage from "./pages/ChatPage";
 import ForgotPassword from "./pages/ForgotPassword";
+import PostDetail from "./pages/PostDetail";
 
 const router = createBrowserRouter([
   {
@@ -34,12 +35,16 @@ const router = createBrowserRouter([
     element: <ProfileEdit />,
   },
   {
-    path: "/chat",
+    path: "/chat/:receiverId",
     element: <ChatPage />,
   },
   {
     path: "forgot-password",
     element: <ForgotPassword />,
+  },
+  {
+    path: "post-detail/:postId",
+    element: <PostDetail />,
   }
 ]);
 
