@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import NavItem from "./NavItem";
 import { LuHome, LuPlus, LuUser } from "react-icons/lu";
+import { LuMessageCircle } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
 import { useNavigate } from "react-router-dom";
 import axios from "../lib/axios";
@@ -21,7 +22,7 @@ function Navbar() {
     }
   };
   return (
-    <section className="fixed bottom-0 left-0 right-0 bg-gray-900 border-slate-400 shadow-lg flex py-3 md:top-0 md:w-72 md:flex-col md:py-5 md:justify-between">
+    <section className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-slate-400 shadow-lg flex py-3 md:top-0 md:w-72 md:flex-col md:py-5 md:justify-between">
       <div className="w-full">
         <div className="hidden md:block text-white text-center">
           <h1 className="font-playWrite text-2xl">el posting</h1>
@@ -45,6 +46,12 @@ function Navbar() {
             label="Profile"
           >
             <LuUser className="text-2xl text-dark group-hover:text-primary lg:group-hover:text-white" />
+          </NavItem>
+          <NavItem
+            to={`/chat/inbox`}
+            label="Chat"
+          >
+            <LuMessageCircle className="text-2xl text-dark group-hover:text-primary lg:group-hover:text-white" />
           </NavItem>
         </div>
       </div>
