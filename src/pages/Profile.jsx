@@ -97,7 +97,7 @@ export default function Profile() {
       {!Cookies.get("token") ? (
         <Navigate to="/" />
       ) : (
-        <section className="min-h-screen flex bg-background md:pl-72">
+        <section className="min-h-screen flex bg-background md:pl-72 pb-24 md:pb-0">
           <Navbar />
           <div className="h-screen text-white overflow-scroll w-full pb-7">
             <motion.div
@@ -163,7 +163,7 @@ export default function Profile() {
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
-                      Message
+                      <Link to={`/chat/${user.id}`}>Message</Link>
                     </motion.button>
                   </div>
                 )}
@@ -172,26 +172,28 @@ export default function Profile() {
             {/* Posts Section */}
             <div className="mt-6 w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-2 px-2">
               {posts.map((post) => (
-                <motion.div
-                  key={post.id}
-                  className="bg-white shadow-md cursor-pointer rounded-lg overflow-hidden"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <img
-                    src={`http://localhost:3000${post.img_url}`}
-                    alt={post.caption}
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-4">
-                    <p className="text-sm text-gray-800 font-semibold">{post.caption}</p>
-                    <div className="flex justify-between text-gray-600 text-xs mt-2">
-                      <span>❤️ {post.like_count} Likes</span>
+                <Link to={`/post-detail/${post.id}`}>
+                  <motion.div
+                    key={post.id}
+                    className="bg-white shadow-md cursor-pointer rounded-lg overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <img
+                      src={`http://localhost:3000${post.img_url}`}
+                      alt={post.caption}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-4">
+                      <p className="text-sm text-gray-800 font-semibold">{post.caption}</p>
+                      <div className="flex justify-between text-gray-600 text-xs mt-2">
+                        <span>❤️ {post.like_count} Likes</span>
+                      </div>
                     </div>
-                  </div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               ))}
             </div>
           </div>
