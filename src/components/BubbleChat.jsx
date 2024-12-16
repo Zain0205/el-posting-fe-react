@@ -1,4 +1,3 @@
-import defaultProfile from "../assets/images/defaultProfile.png";
 
 function BubbleChat({ content, sender_img, isOwn }) {
   return (
