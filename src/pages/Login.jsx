@@ -98,6 +98,9 @@ function Login() {
               Buat akun
             </Link>
           </p>
+          <Link to="forgot-password">
+            <p className="my-2 text-sm text-center text-white">Lupa password?</p>
+          </Link>
         </form>
       </motion.div>
     </section>
