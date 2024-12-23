@@ -3,10 +3,12 @@ import Button from "./Button";
 import Input from "./Input";
 import axios from "../lib/axios";
 import BubbleChat from "./BubbleChat";
+import CommentChat from "./CommentChat";
 
 function CommentModal({ setIsOpen, img, postId }) {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleNewCommentChange = (e) => {
     setNewComment(e.target.value);
@@ -21,6 +23,7 @@ function CommentModal({ setIsOpen, img, postId }) {
 
     if (newComment.trim()) {
       try {
+        setIsLoading(true);
         const response = await axios.post("/comment/add", payload, { withCredentials: true });
         if (response.status !== 201) {
           throw new Error("Failed to add comment");
@@ -28,7 +31,9 @@ function CommentModal({ setIsOpen, img, postId }) {
         console.log(response.data);
         setComments([...comments, handleGetComments()]);
         setNewComment("");
+        setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         console.error(err);
       }
     }
@@ -62,8 +67,10 @@ function CommentModal({ setIsOpen, img, postId }) {
         <div className="w-full lg:w-1/2 flex flex-col lg:relative text-white overflow-scroll">
           <div className="p-4 flex-1 overflow-y-auto pb-40">
             {comments.map((comment) => (
-              <BubbleChat
+              <CommentChat
+                isOwn={false}
                 key={comment.id}
+                sender_img={comment.img_url}
                 content={comment.content}
                 username={comment.username}
               />
@@ -82,7 +89,10 @@ function CommentModal({ setIsOpen, img, postId }) {
               onClick={handleAddComment}
               disabled={!newComment.trim()}
             >
-              Post
+            <div className="flex items-center justify-center gap-x-2">
+              {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+              {isLoading ? "Loading..." : "Post"}
+            </div>
             </Button>
           </div>
         </div>

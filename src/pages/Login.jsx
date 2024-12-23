@@ -12,6 +12,8 @@ function Login() {
     email: null,
     password: null,
   });
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -26,6 +28,7 @@ function Login() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await axios.post("/auth/login", userLogin);
 
       if (response.status !== 200) {
@@ -39,8 +42,12 @@ function Login() {
         Cookies.set("token", response.data.token);
       }
 
+      setIsLoading(false);
+
       navigate("/home");
     } catch (err) {
+      setIsLoading(false);
+      setError(err.response.data.message);
       console.error(err);
     }
   };
@@ -88,7 +95,13 @@ function Login() {
             type="password"
             placeholder="Password"
           />
-          <Button>Login</Button>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button disabled={isLoading}>
+            <div className="flex items-center justify-center gap-x-2">
+              {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+              {isLoading ? "Loading..." : "Login"}
+            </div>
+          </Button>
           <p className="text-center mt-4  text-white">
             Belum punya akun?{" "}
             <Link

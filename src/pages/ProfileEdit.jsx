@@ -11,6 +11,7 @@ import axios from "../lib/axios";
 function ProfileEdit() {
   const profileRef = useRef();
   const [userProfile, setUserProfile] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleImageData = (e) => {
@@ -32,6 +33,7 @@ function ProfileEdit() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("img_url", userProfile.img_url);
       formData.append("username", userProfile.username);
@@ -52,8 +54,10 @@ function ProfileEdit() {
         console.log(response.data);
       }
 
+      setIsLoading(false);
       navigate(`/profile/${Cookies.get("id")}`);
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -118,7 +122,12 @@ function ProfileEdit() {
                 placeholder="New Bio"
                 id="u-bio"
               />
-              <Button>Update</Button>
+              <Button>
+                <div className="flex items-center justify-center gap-x-2">
+                  {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+                  {isLoading ? "Loading..." : "Login"}
+                </div>
+              </Button>
             </form>
           </div>
           <Recomendation />

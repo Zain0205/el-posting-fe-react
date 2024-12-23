@@ -14,6 +14,7 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(like);
   const [showActionModal, setShowActionModal] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const id = Cookies.get("id");
   const postOwner = userId == id;
 
@@ -38,12 +39,15 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
     };
 
     try {
+      setIsLoading(true);
       const response = await axios.post("/like/add", payload, { withCredentials: true });
       if (response.status === 200) {
         setLikeCount(likeCount + 1);
         await handleGetLikeStatus();
       }
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -55,13 +59,16 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
     };
 
     try {
+      setIsLoading(true);
       const response = await axios.post("/like/remove", payload, { withCredentials: true });
       console.log(response);
       if (response.status === 200) {
         setLikeCount(likeCount - 1);
         await handleGetLikeStatus();
       }
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -102,7 +109,9 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
         <div className="py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-x-4">
-              <button onClick={isLiked ? handleUnlikePost : handleLikePost}>{isLiked ? <FaHeart className="text-red-500 text-2xl" /> : <LuHeart className="text-white text-2xl" />}</button>
+              <button onClick={isLiked ? handleUnlikePost : handleLikePost}>
+                {isLoading ? <div className="w-5 h-5 border-2 border-t-gray-500 border-gray-300 rounded-full animate-spin" /> : isLiked ? <FaHeart className="text-red-500 text-2xl" /> : <LuHeart className="text-white text-2xl" />}
+              </button>
             </div>
             <button onClick={() => setIsOpen(true)}>
               <LuMessageCircle className="text-white text-2xl" />
@@ -133,7 +142,6 @@ function ActionModal({ postId }) {
   const navigate = useNavigate();
   const id = Cookies.get("id");
 
-
   const handleDeletePost = async () => {
     try {
       const response = await axios.delete(`/post/delete/${postId}`);
@@ -147,11 +155,18 @@ function ActionModal({ postId }) {
 
   return (
     <div className="w-40 rounded-lg bg-gray-700 cursor-pointer text-white overflow-hidden right-0 top-16 absolute">
+      <Link to={`/post-update/${postId}`}>
+        <div className="hover:bg-gray-800">
+          <button className="w-full p-3 text-left">Update</button>
+        </div>
+      </Link>
       <div className="hover:bg-gray-800">
-        <button className="w-full p-3 text-left" onClick={handleDeletePost}>Update</button>
-      </div>
-      <div className="hover:bg-gray-800">
-        <button className="w-full p-3 text-left" onClick={handleDeletePost}>Delete</button>
+        <button
+          className="w-full p-3 text-left"
+          onClick={handleDeletePost}
+        >
+          Delete
+        </button>
       </div>
     </div>
   );

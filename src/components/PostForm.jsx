@@ -11,6 +11,8 @@ function PostForm() {
     content: null,
     img_url: null,
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   const image = useRef();
   const navigate = useNavigate();
 
@@ -40,6 +42,7 @@ function PostForm() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const formData = new FormData();
       formData.append("user_id", post.user_id);
       formData.append("content", post.content);
@@ -59,9 +62,10 @@ function PostForm() {
       if (response.status === 201) {
         console.log(response.data);
       }
-
+      setIsLoading(false);
       navigate("/home");
     } catch (err) {
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -107,7 +111,12 @@ function PostForm() {
         value={post.content}
         textarea
       />
-      <Button>Post</Button>
+      <Button>
+        <div className="flex items-center justify-center gap-x-2">
+          {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+          {isLoading ? "Loading..." : "Post"}
+        </div>
+      </Button>
     </form>
   );
 }

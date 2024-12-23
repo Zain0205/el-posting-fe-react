@@ -13,6 +13,8 @@ function Register() {
     email: null,
     password: null
   })
+  const [error, setError] = useState(null)
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleRegister = (fieldname, e) => {
     const temp = {...users}
@@ -25,11 +27,14 @@ function Register() {
     e.preventDefault();
 
     try {
+      setIsLoading(true)
       const response = await axios.post('/auth/register', users) 
       if (response.status === 201){
         navigate('/')
       }
+      setIsLoading(false)
     } catch(err){
+      setError(err.response.data.message)
       console.error(err)
     }
   }
@@ -90,7 +95,10 @@ function Register() {
             placeholder="Password"
             required
           />
-          <Button>Register</Button>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button>
+            {isLoading ? "Loading..." : "Register"}
+          </Button>
           <p className="text-center mt-4  text-white">
             Sudah punya akun?
             <Link
