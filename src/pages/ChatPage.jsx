@@ -15,6 +15,7 @@ function ChatPage() {
   const [user, setUser] = useState({});
   const [chats, setChats] = useState([]);
   const [chatList, setChatList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const userID = Cookies.get("id");
   const { receiverId } = useParams();
 
@@ -66,11 +67,12 @@ function ChatPage() {
     socket.emit("register", userID);
 
     socket.on("newMessage", (msg) => {
-      setChats((prev) => [...prev, msg]);
+      setChats(prev => [...prev, msg]);
     });
 
     const handleGetChatList = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(`/chat/list-chat`, { withCredentials: true });
 
         if (response.status !== 200) {
@@ -78,7 +80,9 @@ function ChatPage() {
         }
         console.log(response.data);
         setChatList(response.data);
+        setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         console.error(err);
       }
     };
@@ -111,6 +115,7 @@ function ChatPage() {
           <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
             <div className="text-white mt-2">
               <h1 className="font-roboto px-5 text-2xl mb-2">Chat</h1>
+              {isLoading && <ChatLoader />}
               {chatList.map((cl) => (
                 <ChatList
                   key={cl.id}
@@ -224,6 +229,18 @@ function Inbox() {
       </div>
     </div>
   );
+}
+
+function ChatLoader(){
+  return (
+    <div className="flex items-center gap-3 py-3 ml-3">
+      <div className="animate-pulse rounded-full bg-gray-500 h-12 w-12" />
+      <div className="space-y-2">
+        <div className="animate-pulse rounded-md bg-gray-500 h-4 w-[200px]"> </div>
+        <div className="animate-pulse rounded-md bg-gray-500 h-4 w-[170px]"> </div>
+      </div>
+    </div>
+  )
 }
 
 export default ChatPage;
