@@ -32,7 +32,7 @@ function Home() {
       {!Cookies.get("token") ? (
         <Navigate to="/" />
       ) : (
-        <section className="min-h-screen flex bg-background md:pl-72 ">
+        <section className="h-screen flex bg-background md:pl-72 pb-24">
           <Navbar />
           <div className="h-screen p-5 w-full overflow-scroll">
             <div className="text-white max-w-lg mx-auto flex items-center justify-between w-full md:hidden">
