@@ -8,6 +8,8 @@ import ProfileEdit from "./pages/ProfileEdit";
 import ChatPage from "./pages/ChatPage";
 import ForgotPassword from "./pages/ForgotPassword";
 import PostDetail from "./pages/PostDetail";
+import ResetPassword from "./pages/ResetPassword";
+import ProfileLoading from "./components/ProfileLoading";
 
 const router = createBrowserRouter([
   {
@@ -39,12 +41,20 @@ const router = createBrowserRouter([
     element: <ChatPage />,
   },
   {
-    path: "forgot-password",
+    path: "/forgot-password",
     element: <ForgotPassword />,
   },
   {
-    path: "post-detail/:postId",
+    path: "/post-detail/:postId",
     element: <PostDetail />,
+  },
+  {
+    path: "/reset-password/:token",
+    element: <ResetPassword />,
+  },
+  {
+    path: "/test",
+    element: <ProfileLoading />
   }
 ]);
 
