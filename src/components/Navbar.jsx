@@ -3,24 +3,11 @@ import NavItem from "./NavItem";
 import { LuHome, LuPlus, LuUser } from "react-icons/lu";
 import { LuMessageCircle } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
-import { useNavigate } from "react-router-dom";
 import axios from "../lib/axios";
 
-function Navbar() {
-  const navigate = useNavigate();
+function Navbar({ handleLogout }) {
   const id = Cookies.get("id");
 
-
-  const handleLogout = async () => {
-    try {
-      await axios.post("/auth/logout", {}, { withCredentials: true });
-      Cookies.remove("token");
-      Cookies.remove("id");
-      navigate("/");
-    } catch (error) {
-      console.error("Error during logout:", error);
-    }
-  };
   return (
     <section className="fixed bottom-0 left-0 right-0 z-50 bg-gray-900 border-slate-400 shadow-lg flex py-3 md:top-0 md:w-72 md:flex-col md:py-5 md:justify-between">
       <div className="w-full">
