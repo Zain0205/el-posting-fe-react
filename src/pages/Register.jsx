@@ -4,40 +4,43 @@ import Input from "../components/Input";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import axios from "../lib/axios";
+import { LuEye } from "react-icons/lu";
+import { LuEyeOff } from "react-icons/lu";
 
 function Register() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const [users, setUsers] = useState({
     username: null,
     email: null,
-    password: null
-  })
-  const [error, setError] = useState(null)
-  const [isLoading, setIsLoading] = useState(false)
+    password: null,
+  });
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [fieldType, setFieldType] = useState("password");
 
   const handleRegister = (fieldname, e) => {
-    const temp = {...users}
+    const temp = { ...users };
 
-    temp[fieldname] = e.target.value
-    setUsers(temp)
-  }
+    temp[fieldname] = e.target.value;
+    setUsers(temp);
+  };
 
   const handleSubmitRegister = async (e) => {
     e.preventDefault();
 
     try {
-      setIsLoading(true)
-      const response = await axios.post('/auth/register', users) 
-      if (response.status === 201){
-        navigate('/')
+      setIsLoading(true);
+      const response = await axios.post("/auth/register", users);
+      if (response.status === 201) {
+        navigate("/");
       }
-      setIsLoading(false)
-    } catch(err){
-      setError(err.response.data.message)
-      console.error(err)
+      setIsLoading(false);
+    } catch (err) {
+      setError(err.response.data.message);
+      console.error(err);
     }
-  }
+  };
 
   return (
     <section className="h-screen bg-background flex items-center justify-center px-5 flex-col gap-y-5">
@@ -86,18 +89,34 @@ function Register() {
             placeholder="Email"
             required
           />
-          <Input
-            onChange={(e) => handleRegister("password", e)}
-            name="password-f"
-            type="password"
-            id="r-password"
-            label="Password"
-            placeholder="Password"
-            required
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => handleRegister("password", e)}
+              name="password-f"
+              type={fieldType}
+              id="r-password"
+              label="Password"
+              placeholder="Password"
+              required
+            />
+            {fieldType === "password" ? (
+              <LuEyeOff
+                onClick={() => setFieldType("text")}
+                className="absolute cursor-pointer text-xl right-3 top-11 text-white"
+              />
+            ) : (
+              <LuEye
+                onClick={() => setFieldType("password")}
+                className="absolute cursor-pointer text-xl right-3 top-11 text-white"
+              />
+            )}
+          </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
-          <Button>
-            {isLoading ? "Loading..." : "Register"}
+          <Button disabled={isLoading}>
+            <div className="flex items-center justify-center gap-x-2">
+              {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+              {isLoading ? "Loading..." : "Register"}
+            </div>
           </Button>
           <p className="text-center mt-4  text-white">
             Sudah punya akun?

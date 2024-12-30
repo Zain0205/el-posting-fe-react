@@ -6,6 +6,8 @@ import axios from "../lib/axios";
 import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
+import { LuEye } from "react-icons/lu";
+import { LuEyeOff } from "react-icons/lu";
 
 function Login() {
   const [userLogin, setUserLogin] = useState({
@@ -14,6 +16,7 @@ function Login() {
   });
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [fieldType, setFieldType] = useState("password");
 
   const navigate = useNavigate();
 
@@ -88,13 +91,26 @@ function Login() {
             label="Email"
             placeholder="Email"
           />
-          <Input
-            onChange={(e) => handleLoginData("password", e)}
-            id="l-password"
-            label="Password"
-            type="password"
-            placeholder="Password"
-          />
+          <div className="relative">
+            <Input
+              onChange={(e) => handleLoginData("password", e)}
+              id="l-password"
+              label="Password"
+              type={fieldType}
+              placeholder="Password"
+            />
+            {fieldType === "password" ? (
+              <LuEyeOff
+                onClick={() => setFieldType("text")}
+                className="absolute cursor-pointer text-xl right-3 top-11 text-white"
+              />
+            ) : (
+              <LuEye
+                onClick={() => setFieldType("password")}
+                className="absolute cursor-pointer text-xl right-3 top-11 text-white"
+              />
+            )}
+          </div>
           {error && <p className="text-red-500 text-sm">{error}</p>}
           <Button disabled={isLoading}>
             <div className="flex items-center justify-center gap-x-2">

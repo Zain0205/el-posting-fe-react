@@ -165,22 +165,18 @@ export default function Profile() {
                     </Link>
                   ) : (
                     <div className="flex gap-x-5 mt-2">
-                      <motion.button
+                      <button
                         className={`w-full py-2 px-4 ${isFollowing ? "bg-gray-200 hover:bg-gray-300" : "bg-blue-500 hover:bg-blue-600 text-white"} text-gray-800 font-bold rounded-md shadow-md focus:outline-none`}
                         onClick={isFollowing ? handleUnfollowuser : handleFollowUser}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                       >
                         {followLoader ? "Loading..." : isFollowing ? "Unfollow" : "Follow"}
                         {/* {isFollowing ? "Unfollow" : "Follow"} */}
-                      </motion.button>
-                      <motion.button
+                      </button>
+                      <button
                         className="w-full py-2 px-4 bg-gray-200 text-gray-800 font-bold rounded-md shadow-md hover:bg-gray-300 focus:outline-none"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
                       >
                         <Link to={`/chat/${user.id}`}>Message</Link>
-                      </motion.button>
+                      </button>
                     </div>
                   )}
                 </div>

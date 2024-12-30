@@ -14,7 +14,10 @@ function ResetPassword() {
   const [confirmFieldType, setConfirmFieldType] = useState("password");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { token } = useParams();
+  const navigate = useNavigate();
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -25,14 +28,19 @@ function ResetPassword() {
     };
 
     try {
+      setIsLoading(true);
       const response = await axios.post(`/auth/reset-password/${token}`, payload);
 
       if (response.status !== 200) {
         throw new Error("Failed to reset password");
       }
 
+      navigate("/");
       console.log(response.data);
+      setIsLoading(false);
     } catch (err) {
+      setIsLoading(false);
+      setError(err.response.data.message);
       console.error(err);
     }
   };
@@ -108,7 +116,13 @@ function ResetPassword() {
               />
             )}
           </div>
-          <Button>Reset Password</Button>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
+          <Button disabled={isLoading}>
+            <div className="flex items-center justify-center gap-x-2">
+              {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+              {isLoading ? "Loading..." : "Reset Password"}
+            </div>
+          </Button>
         </form>
       </motion.div>
     </section>

@@ -9,19 +9,25 @@ import Cookies from "js-cookie";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [message, setMessage] = useState("");
 
   const handleForgotPassword = async (e) => {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const response = await axios.post("/auth/forgot-password", { email });
 
       if (response.status !== 200) {
         throw new Error("Failed to send reset password email");
       }
-
+      setIsLoading(false);
+      setMessage(`${response.data.message}, check your email to reset your password`);
       console.log(response.data);
     } catch (err) {
+      setMessage(err.response.data.message);
+      setIsLoading(false);
       console.error(err);
     }
   };
@@ -62,7 +68,13 @@ function ForgotPassword() {
             label="Email"
             placeholder="Email"
           />
-          <Button>Reset Password</Button>
+          {message && <p className="text-white text-sm">{message}</p>}
+          <Button disabled={isLoading}>
+            <div className="flex items-center justify-center gap-x-2">
+              {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+              {isLoading ? "Loading..." : "Reset Password"}
+            </div>
+          </Button>
         </form>
       </motion.div>
     </section>
