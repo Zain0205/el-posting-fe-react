@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "../lib/axios";
-import defaultProfile from "../assets/images/defaultProfile.png";
 import { Link } from "react-router-dom";
+import RecomendationCard from "./RecomendationCard";
 
 function Recomendation() {
   const [recomendationList, setRecomendationList] = useState([]);
@@ -39,25 +39,6 @@ function Recomendation() {
         ))}
       </div>
     </section>
-  );
-}
-
-function RecomendationCard({ username, id, img, followers }) {
-  return (
-    <Link to={`/profile/${id}`}>
-      <div className="flex items-center gap-3 bg-background py-3 rounded-lg">
-        <div className="w-16 h-16 bg-gray-400 overflow-hidden rounded-full">
-          <img
-            src={img ? `http://localhost:3000${img}` : defaultProfile}
-            alt=""
-          />
-        </div>
-        <div>
-          <h1 className="text-white font-semibold">{username}</h1>
-          <p className="text-white text-sm">Followed by {followers} people</p>
-        </div>
-      </div>
-    </Link>
   );
 }
 
