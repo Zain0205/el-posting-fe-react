@@ -8,12 +8,14 @@ import Cookies from "js-cookie";
 import { AnimatePresence, motion } from "framer-motion";
 import { LuLogOut } from "react-icons/lu";
 import { LuSearch } from "react-icons/lu";
+import { LuX } from "react-icons/lu";
 import RecomendationCard from "../components/RecomendationCard";
 
 function Home() {
   const [postList, setPostList] = useState([]);
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
 
   useEffect(() => {
@@ -36,6 +38,7 @@ function Home() {
   useEffect(() => {
     const handleSearch = async () => {
       try {
+        setIsLoading(true);
         const response = await axios.get(`/profile/search`, {
           params: {
             username: search,
@@ -44,7 +47,9 @@ function Home() {
 
         console.log(response.data);
         setSearchResult(response.data);
+        setIsLoading(false);
       } catch (err) {
+        setIsLoading(false);
         console.error("error");
       }
     };
@@ -84,12 +89,12 @@ function Home() {
                 <input
                   id="search-input"
                   value={search}
+                  autoComplete="off"
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Search For Profile"
                   className="w-full px-4 py-2 mt-2 text-white bg-gray-700 border border-gray-600 rounded-xl focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                 />
                 <LuSearch
-                  onClick={() => setTest((prev) => !prev)}
                   className="absolute top-5 cursor-pointer right-4 text-xl text-white"
                 />
               </div>
@@ -101,18 +106,29 @@ function Home() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
-                    className={`h-72 w-full z-[100] overflow-scroll px-4 py-2 ${searchResult.length === 0 ? "flex items-center justify-center" : "" } bg-gray-900 rounded-lg sticky top-12`}
+                    className={`h-72 w-full z-[100] overflow-scroll px-4 py-2 ${searchResult.length === 0 ? "flex items-center justify-center" : ""} bg-gray-900 rounded-lg sticky top-12`}
                   >
-                    {searchResult.length === 0 && <p className="text-white text-center">No Result</p>}
-                    {searchResult.map((r) => (
-                      <RecomendationCard
-                        key={r.id}
-                        id={r.id}
-                        username={r.username}
-                        img={r.img_url}
-                        followers={r.follower_count}
-                      />
-                    ))}
+                    {searchResult.length === 0 && !isLoading && <p className="text-white text-center">No Result</p>}
+                    {isLoading && (
+                      <div className="flex items-center h-full text-white justify-center gap-x-2">
+                        {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
+                        {isLoading ? "Loading..." : "Login"}
+                      </div>
+                    )}
+                    {!isLoading &&
+                      searchResult.map((r) => (
+                        <RecomendationCard
+                          key={r.id}
+                          id={r.id}
+                          username={r.username}
+                          img={r.img_url}
+                          followers={r.follower_count}
+                        />
+                      ))}
+
+                      <div className="absolute top-3 right-2 text-white">
+                      <LuX className="cursor-pointer text-lg" onClick={() => setSearch("")} />
+                      </div>
                   </motion.div>
                 )}
               </AnimatePresence>

@@ -10,6 +10,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import PostDetail from "./pages/PostDetail";
 import ResetPassword from "./pages/ResetPassword";
 import ProfileLoading from "./components/ProfileLoading";
+import EditPostPage from "./pages/EditPostPage";
 
 const router = createBrowserRouter([
   {
@@ -53,8 +54,8 @@ const router = createBrowserRouter([
     element: <ResetPassword />,
   },
   {
-    path: "/test",
-    element: <ProfileLoading />
+    path: "/post-edit/:postId",
+    element: <EditPostPage />
   }
 ]);
 

@@ -68,8 +68,9 @@ function CommentModal({ setIsOpen, img, postId }) {
           <div className="p-4 flex-1 overflow-y-auto pb-40">
             {comments.map((comment) => (
               <CommentChat
-                isOwn={false}
                 key={comment.id}
+                comment_id={comment.id}
+                sender_id={comment.user_id}
                 sender_img={comment.img_url}
                 content={comment.content}
                 username={comment.username}

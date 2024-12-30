@@ -24,3 +24,4 @@ export const formatTimeAgo = (timestamp) => {
     return `${years} year${years !== 1 ? "s" : ""} ago`;
   }
 };
+

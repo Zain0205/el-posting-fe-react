@@ -154,6 +154,7 @@ export default function Profile() {
                 {/* Action Button */}
                 <div className="px-6 pb-6">
                   {profileOwner ? (
+
                     <Link to={`/edit/user`}>
                       <motion.button
                         className={`w-full py-2 px-4 bg-blue-500 text-white font-bold rounded-md shadow-md hover:bg-blue-600 focus:outline-none`}
@@ -175,7 +176,7 @@ export default function Profile() {
                       <button
                         className="w-full py-2 px-4 bg-gray-200 text-gray-800 font-bold rounded-md shadow-md hover:bg-gray-300 focus:outline-none"
                       >
-                        <Link to={`/chat/${user.id}`}>Message</Link>
+                        <Link className="py-2.5 px-16" to={`/chat/${user.id}`}>Message</Link>
                       </button>
                     </div>
                   )}
@@ -188,7 +189,7 @@ export default function Profile() {
                 <Link to={`/post-detail/${post.id}`}>
                   <motion.div
                     key={post.id}
-                    className="bg-white shadow-md cursor-pointer rounded-lg overflow-hidden"
+                    className="bg-gray-900 shadow-md cursor-pointer rounded-lg overflow-hidden"
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
                     whileHover={{ scale: 1.02 }}
@@ -200,8 +201,8 @@ export default function Profile() {
                       className="w-full h-48 object-cover"
                     />
                     <div className="p-4">
-                      <p className="text-sm text-gray-800 font-semibold">{post.caption}</p>
-                      <div className="flex justify-between text-gray-600 text-xs mt-2">
+                      <p className="text-sm line-clamp-1 text-gray-500 font-semibold">{post.content}</p>
+                      <div className="flex justify-between text-gray-400 text-xs mt-2">
                         <span>❤️ {post.like_count} Likes</span>
                       </div>
                     </div>

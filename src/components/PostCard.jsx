@@ -155,9 +155,9 @@ function ActionModal({ postId }) {
 
   return (
     <div className="w-40 rounded-lg bg-gray-700 cursor-pointer text-white overflow-hidden right-0 top-16 absolute">
-      <Link to={`/post-update/${postId}`}>
+      <Link to={`/post-edit/${postId}`}>
         <div className="hover:bg-gray-800">
-          <button className="w-full p-3 text-left">Update</button>
+          <button className="w-full p-3 text-left">Edit</button>
         </div>
       </Link>
       <div className="hover:bg-gray-800">
