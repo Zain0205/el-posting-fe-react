@@ -111,7 +111,7 @@ function PostForm() {
         value={post.content}
         textarea
       />
-      <Button>
+      <Button disabled={isLoading}>
         <div className="flex items-center justify-center gap-x-2">
           {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
           {isLoading ? "Loading..." : "Post"}
