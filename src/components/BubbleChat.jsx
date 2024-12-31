@@ -1,5 +1,6 @@
+import { getHourFromTimestamp } from "../lib/formater";
 
-function BubbleChat({ content, sender_img, isOwn }) {
+function BubbleChat({ time, content, sender_img, isOwn }) {
   return (
     <>
       <div className={`flex ${isOwn ? "justify-end" : "justify-start"} mb-4`}>
@@ -15,7 +16,7 @@ function BubbleChat({ content, sender_img, isOwn }) {
         <div className={`max-w-xs break-words px-4 gap-x-3 py-1.5 overflow- rounded-xl flex shadow-lg ${isOwn ? "bg-blue-500 text-white rounded-tr-none" : "bg-gray-200 text-gray-800 rounded-tl-none"}`}>
           <p className="text-base whitespace-pre-wrap max-w-full break-words">{content}</p>
           <div className="flex items-end">
-            <p className="text-[8px] place-items-end text-black mt-1 text-right">12.00</p>
+            <p className="text-[8px] place-items-end text-black mt-1 text-right">{getHourFromTimestamp(time)}</p>
           </div>
         </div>
         {/* {isOwn && (
