@@ -25,3 +25,10 @@ export const formatTimeAgo = (timestamp) => {
   }
 };
 
+export function getHourFromTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    return date.toTimeString().split(':')[0] + ':' + date.toTimeString().split(':')[1];
+}
+
+
+
