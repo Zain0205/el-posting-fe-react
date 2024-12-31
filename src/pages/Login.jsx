@@ -98,6 +98,7 @@ function Login() {
               label="Password"
               type={fieldType}
               placeholder="Password"
+              required
             />
             {fieldType === "password" ? (
               <LuEyeOff
