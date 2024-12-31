@@ -90,6 +90,7 @@ function Login() {
             id="l-email"
             label="Email"
             placeholder="Email"
+            required
           />
           <div className="relative">
             <Input
