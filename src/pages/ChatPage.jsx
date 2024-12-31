@@ -7,6 +7,8 @@ import { useEffect, useRef, useState } from "react";
 import defaultProfile from "../assets/images/defaultProfile.png";
 import axios from "../lib/axios";
 import { LuMessageCircle } from "react-icons/lu";
+import { LuArrowLeft } from "react-icons/lu";
+import { getHourFromTimestamp } from "../lib/formater";
 
 const socket = io("http://localhost:3000");
 
@@ -67,7 +69,7 @@ function ChatPage() {
     socket.emit("register", userID);
 
     socket.on("newMessage", (msg) => {
-      setChats(prev => [...prev, msg]);
+      setChats((prev) => [...prev, msg]);
     });
 
     const handleGetChatList = async () => {
@@ -98,6 +100,7 @@ function ChatPage() {
       receiver_id: receiverId,
       content: message,
       // sender_avatar: null,
+      created_at: new Date().toISOString(),
     };
 
     socket.emit("sendMessage", msg);
@@ -112,7 +115,7 @@ function ChatPage() {
       ) : (
         <section className="h-screen flex justify-between bg-background md:pl-72 ">
           <Navbar />
-          <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
+          <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 pb-20 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
             <div className="text-white mt-2">
               <h1 className="font-roboto px-5 text-2xl mb-2">Chat</h1>
               {isLoading && <ChatLoader />}
@@ -132,7 +135,10 @@ function ChatPage() {
           ) : (
             <div className={`h-screen w-full lg:w-2/3 bg-gray-800 overflow-scroll`}>
               {/* Header Chat */}
-              <div className="sticky top-0 z-10 bg-gray-900 border-b border-gray-700 py-4 px-5 flex items-center justify-between">
+              <div className="sticky gap-x-3 top-0 z-10 bg-gray-900 border-b border-gray-700 py-4 px-5 flex items-center">
+                <Link to="/chat/inbox">
+                  <LuArrowLeft className="text-white text-2xl cursor-pointer" />
+                </Link>
                 <div className="flex items-center gap-3">
                   <img
                     src={user.img_url ? `http://localhost:3000${user.img_url}` : defaultProfile}
@@ -144,13 +150,14 @@ function ChatPage() {
               </div>
 
               {/* Chat Content */}
-              <div className="py-5 px-5 min-h-[80vh] md:min-h-[87vh] lg:min-h-[83vh] space-y-4">
+              <div className="py-5 px-5 min-h-[80vh] md:min-h-[89vh] lg:min-h-[80vh] space-y-4">
                 {chats.map((chat) => (
                   <BubbleChat
                     key={chat.id}
                     isOwn={chat.sender_id == userID}
                     content={chat.content}
                     sender_img={chat.sender_avatar}
+                    time={chat.created_at}
                   />
                 ))}
                 <div ref={messageRef}></div>
@@ -190,7 +197,7 @@ function ChatPage() {
   );
 }
 
-function ChatList({ id, username, img, content }) {
+function ChatList({ id, username, img, content, time }) {
   return (
     <Link to={`/chat/${id}`}>
       <div className="py-5 cursor-pointer border-b border-gray-600 w-full flex items-center px-4">
@@ -205,11 +212,9 @@ function ChatList({ id, username, img, content }) {
         </div>
         <div className="w-[64%]">
           <h1 className="text-base font-semibold">{username}</h1>
-          <p className="text-xs truncate mt-1">{content}</p>
+          {/* <p className="text-xs truncate mt-1">{content}</p> */}
         </div>
-        <div className="w-[20%] text-end flex flex-col items-center">
-          <p className="text-[10px]">12.00</p>
-        </div>
+        <div className="w-[20%] text-end flex flex-col items-center">{/* <p className="text-[10px]">{getHourFromTimestamp(time)}</p> */}</div>
       </div>
     </Link>
   );
@@ -231,7 +236,7 @@ function Inbox() {
   );
 }
 
-function ChatLoader(){
+function ChatLoader() {
   return (
     <div className="flex items-center gap-3 py-3 ml-3">
       <div className="animate-pulse rounded-full bg-gray-500 h-12 w-12" />
@@ -240,7 +245,7 @@ function ChatLoader(){
         <div className="animate-pulse rounded-md bg-gray-500 h-4 w-[170px]"> </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default ChatPage;
