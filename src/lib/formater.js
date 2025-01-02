@@ -1,4 +1,5 @@
 export const formatTimeAgo = (timestamp) => {
+
   const now = Date.now();
   const timeDifference = Math.floor((now - new Date(timestamp)) / 1000); // Time difference in seconds
 
