@@ -45,7 +45,6 @@ function Home() {
           },
         });
 
-        console.log(response.data);
         setSearchResult(response.data);
         setIsLoading(false);
       } catch (err) {
