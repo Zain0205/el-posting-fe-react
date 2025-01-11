@@ -69,9 +69,9 @@ function Home() {
 
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="h-screen flex bg-background md:pl-72 pb-24">
           <Navbar handleLogout={handleLogout} />
           <div className="h-screen p-5 w-full overflow-scroll">
@@ -148,7 +148,7 @@ function Home() {
           </div>
           <Recomendation />
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }
