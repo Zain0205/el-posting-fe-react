@@ -80,7 +80,7 @@ function PostForm() {
       console.log('FormData content:', pair[0], pair[1]);
     }
 
-    const response = await axios.post("/api/post/create", formData, {
+    const response = await axios.post("/post/create", formData, {
       withCredentials: true,
       headers: {
         'Content-Type': 'multipart/form-data'
