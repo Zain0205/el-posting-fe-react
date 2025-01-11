@@ -19,5 +19,14 @@
       "source": "/socket.io/(.*)",
       "destination": "http://103.52.115.175/socket.io/$1"
     }
+  ],
+  "middlewares": [
+    {
+      "source": "/api/(.*)",
+      "destination": "http://103.52.115.175/api/$1",
+      "headers": {
+        "x-middleware-next": "1"
+      }
+    }
   ]
 }
