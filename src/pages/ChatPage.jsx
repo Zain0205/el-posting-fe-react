@@ -59,7 +59,6 @@ function ChatPage() {
             throw new Error("Failed to get chat history");
           }
           await handleGetUser();
-          console.log(response.data);
           setChats(response.data);
         } catch (err) {
           console.error(err);
@@ -89,7 +88,6 @@ function ChatPage() {
         if (response.status !== 200) {
           throw new Error("Failed to get chat list");
         }
-        console.log(response.data);
         setChatList(response.data);
         setIsLoading(false);
       } catch (err) {
@@ -119,9 +117,9 @@ function ChatPage() {
 
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="h-screen flex justify-between bg-background md:pl-72 ">
           <Navbar />
           <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 pb-20 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
@@ -201,7 +199,7 @@ function ChatPage() {
             </div>
           )}
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

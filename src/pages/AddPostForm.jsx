@@ -8,9 +8,9 @@ import Cookies from "js-cookie";
 function AddPostForm() {
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="min-h-screen flex items-center bg-background md:pl-72">
           <Navbar />
           <div className="h-screen overflow-scroll p-5 w-full">
@@ -19,7 +19,7 @@ function AddPostForm() {
           </div>
           <Recomendation />
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

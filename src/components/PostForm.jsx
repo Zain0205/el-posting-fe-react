@@ -60,10 +60,9 @@ function PostForm() {
       );
 
       if (response.status === 201) {
-        console.log(response.data);
+        setIsLoading(false);
+        navigate("/home");
       }
-      setIsLoading(false);
-      navigate("/home");
     } catch (err) {
       setIsLoading(false);
       console.error(err);

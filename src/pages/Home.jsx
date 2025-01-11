@@ -22,11 +22,9 @@ function Home() {
     const handleGetPost = async () => {
       try {
         const response = await axios.get("/post/feed");
-        console.log(response.data);
         if (response.status === 200) {
           setPostList(response.data);
         }
-        console.log(postList);
       } catch (err) {
         console.error("error");
       }

@@ -28,7 +28,6 @@ function CommentModal({ setIsOpen, img, postId }) {
         if (response.status !== 201) {
           throw new Error("Failed to add comment");
         }
-        console.log(response.data);
         setComments([...comments, handleGetComments()]);
         setNewComment("");
         setIsLoading(false);
@@ -43,7 +42,6 @@ function CommentModal({ setIsOpen, img, postId }) {
     try {
       const response = await axios.get(`/comment/list/${postId}`);
       setComments(response.data);
-      console.log(response.data);
       return response.data;
     } catch (err) {
       console.error(err);

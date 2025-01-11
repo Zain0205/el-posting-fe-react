@@ -61,7 +61,6 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
     try {
       setIsLoading(true);
       const response = await axios.post("/like/remove", payload, { withCredentials: true });
-      console.log(response);
       if (response.status === 200) {
         setLikeCount(likeCount - 1);
         await handleGetLikeStatus();

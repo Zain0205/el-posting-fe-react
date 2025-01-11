@@ -29,7 +29,6 @@ function EditPostForm() {
           setPost({ user_id, content, img_url });
           // setInitialImage(img_url);
         }
-        console.log(response.data);
         setIsLoading(false);
       } catch (err) {
         setIsLoading(false);
@@ -83,10 +82,9 @@ function EditPostForm() {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
+        setIsLoading(false);
+        navigate(`/profile/${post.user_id}`);
       }
-      setIsLoading(false);
-      navigate(`/profile/${post.user_id}`);
     } catch (err) {
       setIsLoading(false);
       console.error(err);

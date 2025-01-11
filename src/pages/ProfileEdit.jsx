@@ -51,11 +51,9 @@ function ProfileEdit() {
       );
 
       if (response.status === 200) {
-        console.log(response.data);
+        setIsLoading(false);
+        navigate(`/profile/${Cookies.get("id")}`);
       }
-
-      setIsLoading(false);
-      navigate(`/profile/${Cookies.get("id")}`);
     } catch (err) {
       setIsLoading(false);
       console.error(err);
@@ -78,9 +76,9 @@ function ProfileEdit() {
 
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="min-h-screen flex items-center bg-background md:pl-72">
           <Navbar />
           <div className="h-screen text-white overflow-scroll p-5 w-full">
@@ -132,7 +130,7 @@ function ProfileEdit() {
           </div>
           <Recomendation />
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

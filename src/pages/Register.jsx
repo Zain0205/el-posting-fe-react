@@ -39,7 +39,6 @@ function Register() {
     } catch (err) {
       setIsLoading(false);
       setError(err.response.data.message);
-      console.log(err);
     }
   };
 

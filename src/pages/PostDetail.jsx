@@ -17,7 +17,6 @@ function PostDetail() {
     const handleGetPost = async () => {
       try {
         const response = await axios.get(`/post/detail/${postId}`);
-        console.log(response.data);
         if (response.status === 200) {
           setPost(response.data[0]);
         }
@@ -27,15 +26,13 @@ function PostDetail() {
     };
 
     handleGetPost();
-    console.log(post);
-    console.log(post);
   }, []);
 
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="min-h-screen flex bg-background md:pl-72 ">
           <Navbar />
           <div className="h-screen p-5 w-full overflow-scroll">
@@ -69,7 +66,7 @@ function PostDetail() {
           </div>
           <Recomendation />
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }

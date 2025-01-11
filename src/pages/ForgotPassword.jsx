@@ -24,7 +24,6 @@ function ForgotPassword() {
       }
       setIsLoading(false);
       setMessage(`${response.data.message}, check your email to reset your password`);
-      console.log(response.data);
     } catch (err) {
       setMessage(err.response.data.message);
       setIsLoading(false);

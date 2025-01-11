@@ -36,7 +36,6 @@ function ResetPassword() {
       }
 
       navigate("/");
-      console.log(response.data);
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);

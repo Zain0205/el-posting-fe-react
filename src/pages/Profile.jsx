@@ -38,8 +38,7 @@ export default function Profile() {
         if (response.status === 200) {
           setPosts(response.data);
         }
-        setIsPostLoading(false);
-        console.log(posts);
+        // setIsPostLoading(false);
       } catch (err) {
         console.error("error");
       }
@@ -106,9 +105,9 @@ export default function Profile() {
 
   return (
     <>
-      {!Cookies.get("token") ? (
+      {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
-      ) : (
+      ) : ( */}
         <section className="min-h-screen flex bg-background md:pl-72 pb-24 md:pb-0">
           <Navbar />
           <div className="h-screen text-white overflow-scroll w-full pb-7">
@@ -213,7 +212,7 @@ export default function Profile() {
           </div>
           <Recomendation />
         </section>
-      )}
+      {/* )} */}
     </>
   );
 }
