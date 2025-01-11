@@ -1,7 +1,8 @@
 import axios from "axios";
 
 const instance = axios.create({
-  baseURL: "http://localhost:3000/api",
+  baseURL: "/api",  // Ubah ini dari URL lengkap menjadi relatif
+  withCredentials: true
 });
 
 export default instance;
