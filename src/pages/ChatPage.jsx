@@ -11,7 +11,7 @@ import { LuArrowLeft } from "react-icons/lu";
 import { getHourFromTimestamp } from "../lib/formater";
 
 const socket = io("/", {
-  path: "/socket.io",
+  path: "/socket.io/",
   transports: ['polling'], // Gunakan polling saja dulu untuk menghindari masalah WSS
   withCredentials: true,
   autoConnect: true,
