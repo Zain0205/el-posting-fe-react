@@ -11,8 +11,14 @@ import { LuArrowLeft } from "react-icons/lu";
 import { getHourFromTimestamp } from "../lib/formater";
 
 const socket = io("/", {
-  path: "/socket.io",
+  path: "/socket.io/",
+  transports: ['websocket', 'polling'],
   withCredentials: true,
+  autoConnect: true,
+  reconnection: true,
+  reconnectionDelay: 1000,
+  reconnectionDelayMax: 5000,
+  reconnectionAttempts: 5
 });
 
 function ChatPage() {
