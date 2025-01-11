@@ -19,5 +19,11 @@
       "source": "/socket.io/(.*)",
       "destination": "http://103.52.115.175/socket.io/$1"
     }
-  ]
+  ],
+  "functions": {
+    "api/*": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
 }
