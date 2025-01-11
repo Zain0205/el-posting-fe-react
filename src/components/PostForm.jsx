@@ -58,72 +58,36 @@ function PostForm() {
     }
   };
 
-  const handlePostSubmit = async (e) => {
-  e.preventDefault();
-
-  try {
-    setIsLoading(true);
-    const formData = new FormData();
-    
-    if (post.user_id) formData.append("user_id", post.user_id);
-    if (post.content) formData.append("content", post.content);
-    if (post.img_url) {
-      // Debug sebelum kirim
-      console.log("File size:", post.img_url.size);
-      console.log("File type:", post.img_url.type);
-      
-      formData.append("img_url", post.img_url, post.img_url.name);
-    }
-
-    // Debug formData
-    for (let pair of formData.entries()) {
-      console.log('FormData content:', pair[0], pair[1]);
-    }
-
-    const response = await axios.post("/post/create", formData, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      },
-      maxBodyLength: Infinity, // tambahkan ini
-      maxContentLength: Infinity // dan ini
-    });
-
-    if (response.status === 201) {
-      setIsLoading(false);
-      navigate("/home");
-    }
-  } catch (err) {
-    setIsLoading(false);
-    console.error("Error full detail:", err);
-    // Log response error jika ada
-    if (err.response) {
-      console.error("Response data:", err.response.data);
-      console.error("Response status:", err.response.status);
-    }
-  }
-};
-
-  // const handlePostSubmit = async (e) => {
+  //   const handlePostSubmit = async (e) => {
   //   e.preventDefault();
 
   //   try {
   //     setIsLoading(true);
   //     const formData = new FormData();
-  //     formData.append("user_id", post.user_id);
-  //     formData.append("content", post.content);
-  //     formData.append("img_url", post.img_url);
 
-  //     const response = await axios.post(
-  //       "/post/create",
-  //       formData,
-  //       { withCredentials: true },
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
+  //     if (post.user_id) formData.append("user_id", post.user_id);
+  //     if (post.content) formData.append("content", post.content);
+  //     if (post.img_url) {
+  //       // Debug sebelum kirim
+  //       console.log("File size:", post.img_url.size);
+  //       console.log("File type:", post.img_url.type);
+
+  //       formData.append("img_url", post.img_url, post.img_url.name);
+  //     }
+
+  //     // Debug formData
+  //     for (let pair of formData.entries()) {
+  //       console.log('FormData content:', pair[0], pair[1]);
+  //     }
+
+  //     const response = await axios.post("/post/create", formData, {
+  //       withCredentials: true,
+  //       headers: {
+  //         'Content-Type': 'multipart/form-data'
+  //       },
+  //       maxBodyLength: Infinity, // tambahkan ini
+  //       maxContentLength: Infinity // dan ini
+  //     });
 
   //     if (response.status === 201) {
   //       setIsLoading(false);
@@ -131,9 +95,45 @@ function PostForm() {
   //     }
   //   } catch (err) {
   //     setIsLoading(false);
-  //     console.error(err);
+  //     console.error("Error full detail:", err);
+  //     // Log response error jika ada
+  //     if (err.response) {
+  //       console.error("Response data:", err.response.data);
+  //       console.error("Response status:", err.response.status);
+  //     }
   //   }
   // };
+
+  const handlePostSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      setIsLoading(true);
+      const formData = new FormData();
+      formData.append("user_id", post.user_id);
+      formData.append("content", post.content);
+      formData.append("img_url", post.img_url);
+
+      const response = await axios.post(
+        "/post/create",
+        formData,
+        { withCredentials: true },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.status === 201) {
+        setIsLoading(false);
+        navigate("/home");
+      }
+    } catch (err) {
+      setIsLoading(false);
+      console.error(err);
+    }
+  };
 
   return (
     <form
