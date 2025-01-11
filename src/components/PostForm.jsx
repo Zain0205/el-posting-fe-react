@@ -16,20 +16,20 @@ function PostForm() {
   const image = useRef();
   const navigate = useNavigate();
 
-  const handleImageData = (e) => {
-    const file = e.target.files[0];
+  // const handleImageData = (e) => {
+  //   const file = e.target.files[0];
 
-    if (file) {
-      const reader = new FileReader();
+  //   if (file) {
+  //     const reader = new FileReader();
 
-      reader.onload = (e) => {
-        image.current.src = e.target.result;
-      };
+  //     reader.onload = (e) => {
+  //       image.current.src = e.target.result;
+  //     };
 
-      reader.readAsDataURL(file);
-    }
-    setPost({ ...post, img_url: file });
-  };
+  //     reader.readAsDataURL(file);
+  //   }
+  //   setPost({ ...post, img_url: file });
+  // };
 
   const handlePostData = (fiedName, e) => {
     const temp = { ...post };
@@ -37,6 +37,26 @@ function PostForm() {
     temp[fiedName] = e.target.value;
     setPost(temp);
   };
+
+  const handleImageData = (e) => {
+  const file = e.target.files[0];
+  console.log("File before setting:", file); // debugging
+
+  if (file) {
+    // Preview image
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      image.current.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    // Simpan file langsung, tanpa konversi
+    setPost(prev => ({
+      ...prev,
+      img_url: file
+    }));
+  }
+};
 
   const handlePostSubmit = async (e) => {
     e.preventDefault();
