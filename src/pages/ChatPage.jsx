@@ -10,7 +10,7 @@ import { LuMessageCircle } from "react-icons/lu";
 import { LuArrowLeft } from "react-icons/lu";
 import { getHourFromTimestamp } from "../lib/formater";
 
-const socket = io("http://localhost:3000");
+const socket = io("http://103.52.115.175:3000");
 
 function ChatPage() {
   const [message, setMessage] = useState("");
