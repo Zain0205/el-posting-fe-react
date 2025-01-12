@@ -7,7 +7,7 @@ function RecomendationCard({ username, id, img, followers }) {
       <div className="flex items-center gap-3 bg-transparent py-3 rounded-lg">
         <div className="w-16 h-16 bg-gray-400 overflow-hidden rounded-full">
           <img
-            src={img ? `http://localhost:3000${img}` : defaultProfile}
+            src={img ? `http://103.52.115.175${img}` : defaultProfile}
             alt=""
           />
         </div>

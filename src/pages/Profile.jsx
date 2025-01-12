@@ -123,7 +123,7 @@ export default function Profile() {
                 {/* Header */}
                 <div className="relative">
                   <img
-                    src={user.img_url ? `http://localhost:3000${user.img_url}` : defaultProfile}
+                    src={user.img_url ? `http://103.52.115.175:3000${user.img_url}` : defaultProfile}
                     alt={`profile`}
                     className="w-32 h-32 rounded-full border-4 border-white mx-auto mt-6"
                   />
@@ -195,7 +195,7 @@ export default function Profile() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <img
-                      src={`http://localhost:3000${post.img_url}`}
+                      src={`http://103.52.115.175:3000${post.img_url}`}
                       alt={post.caption}
                       className="w-full h-48 object-cover"
                     />

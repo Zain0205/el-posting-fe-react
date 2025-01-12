@@ -148,7 +148,7 @@ function ChatPage() {
                 </Link>
                 <div className="flex items-center gap-3">
                   <img
-                    src={user.img_url ? `http://localhost:3000${user.img_url}` : defaultProfile}
+                    src={user.img_url ? `http://103.52.115.175${user.img_url}` : defaultProfile}
                     className="w-10 h-10 rounded-full"
                     alt="Avatar"
                   />
@@ -211,7 +211,7 @@ function ChatList({ id, username, img, content, time }) {
         <div className="w-[15%]">
           <div>
             <img
-              src={img ? `http://localhost:3000${img}` : defaultProfile}
+              src={img ? `http://103.52.115.175${img}` : defaultProfile}
               className="w-10 h-10 rounded-full"
               alt="@shadcn"
             />

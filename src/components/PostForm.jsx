@@ -40,7 +40,7 @@ function PostForm() {
 
   const handleImageData = (e) => {
     const file = e.target.files[0];
-    console.log("File before setting:", file); // debugging
+    console.log("Selected file:", file); // Debug log
 
     if (file) {
       // Preview image
@@ -50,13 +50,36 @@ function PostForm() {
       };
       reader.readAsDataURL(file);
 
-      // Simpan file langsung, tanpa konversi
-      setPost((prev) => ({
-        ...prev,
-        img_url: file,
-      }));
+      // Simpan file ke state
+      setPost((prev) => {
+        console.log("Setting file to state:", file); // Debug log
+        return {
+          ...prev,
+          img_url: file, // Pastikan ini adalah File object
+        };
+      });
     }
   };
+
+  // const handleImageData = (e) => {
+  //   const file = e.target.files[0];
+  //   console.log("File before setting:", file); // debugging
+
+  //   if (file) {
+  //     // Preview image
+  //     const reader = new FileReader();
+  //     reader.onload = (e) => {
+  //       image.current.src = e.target.result;
+  //     };
+  //     reader.readAsDataURL(file);
+
+  //     // Simpan file langsung, tanpa konversi
+  //     setPost((prev) => ({
+  //       ...prev,
+  //       img_url: file,
+  //     }));
+  //   }
+  // };
 
   //   const handlePostSubmit = async (e) => {
   //   e.preventDefault();
@@ -104,26 +127,71 @@ function PostForm() {
   //   }
   // };
 
-  const handlePostSubmit = async (e) => {
+  // const handlePostSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     setIsLoading(true);
+  //     const formData = new FormData();
+  //     formData.append("user_id", post.user_id);
+  //     formData.append("content", post.content);
+  //     formData.append("img_url", post.img_url);
+
+
+  //     const response = await axios.post(
+  //       "/post/create",
+  //       formData,
+  //       { withCredentials: true },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 201) {
+  //       setIsLoading(false);
+  //       navigate("/home");
+  //     }
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     console.error(err);
+  //   }
+  // };
+
+    const handlePostSubmit = async (e) => {
     e.preventDefault();
 
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("user_id", post.user_id);
-      formData.append("content", post.content);
-      formData.append("img_url", post.img_url);
 
-      const response = await axios.post(
-        "/post/create",
-        formData,
-        { withCredentials: true },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      // Debug log sebelum append
+      console.log("Post data before append:", {
+        user_id: post.user_id,
+        content: post.content,
+        img_url: post.img_url
+      });
+
+      // Append data dengan pengecekan lebih ketat
+      if (post.user_id) formData.append("user_id", post.user_id);
+      if (post.content) formData.append("content", post.content);
+      if (post.img_url instanceof File) {  // Pastikan img_url adalah File
+        console.log("Appending file:", post.img_url.name);
+        formData.append("img_url", post.img_url);
+      }
+
+      // Debug log setelah append
+      for (let [key, value] of formData.entries()) {
+        console.log(`FormData entry - ${key}:`, value instanceof File ? value.name : value);
+      }
+
+      const response = await axios.post("/post/create", formData, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
-      );
+      });
 
       if (response.status === 201) {
         setIsLoading(false);
@@ -131,7 +199,7 @@ function PostForm() {
       }
     } catch (err) {
       setIsLoading(false);
-      console.error(err);
+      console.error("Error:", err);
     }
   };
 

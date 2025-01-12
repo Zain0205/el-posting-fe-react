@@ -16,6 +16,7 @@ function ProfileEdit() {
 
   const handleImageData = (e) => {
     const file = e.target.files[0];
+    console.log("Selected file:", file); // Debug log
 
     if (file) {
       const reader = new FileReader();
@@ -26,29 +27,76 @@ function ProfileEdit() {
 
       reader.readAsDataURL(file);
     }
-    setUserProfile({ ...userProfile, img_url: file });
+
+    setUserProfile(prev => {
+      console.log("Setting file to state:", file); // Debug log
+
+      return {
+        ...prev,
+        img_url: file, // Pastikan ini adalah
+      }
+    })
+    // setUserProfile({ ...userProfile, img_url: file });
   };
+
+  // const handleUpdateProfile = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     setIsLoading(true);
+  //     const formData = new FormData();
+  //     formData.append("img_url", userProfile.img_url);
+  //     formData.append("username", userProfile.username);
+  //     formData.append("bio", userProfile.bio);
+
+
+  //     console.log("Form data:", formData); // Debug log
+
+  //     const response = await axios.patch(
+  //       `/profile/edit`,
+  //       formData,
+  //       { withCredentials: true },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 200) {
+  //       setIsLoading(false);
+  //       navigate(`/profile/${Cookies.get("id")}`);
+  //     }
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     console.error(err);
+  //   }
+  // };
 
   const handleUpdateProfile = async (e) => {
     e.preventDefault();
-
     try {
       setIsLoading(true);
       const formData = new FormData();
-      formData.append("img_url", userProfile.img_url);
+      
+      // Pastikan file ada sebelum append
+      if (userProfile.img_url) {
+        formData.append("img_url", userProfile.img_url);
+      }
       formData.append("username", userProfile.username);
       formData.append("bio", userProfile.bio);
 
-      const response = await axios.patch(
-        `/profile/edit`,
-        formData,
-        { withCredentials: true },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+      // Debug untuk memeriksa isi FormData
+      for (let pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+
+      const response = await axios.patch(`/profile/edit`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data"
         }
-      );
+      });
 
       if (response.status === 200) {
         setIsLoading(false);
@@ -56,16 +104,16 @@ function ProfileEdit() {
       }
     } catch (err) {
       setIsLoading(false);
-      console.error(err);
+      console.error("Error details:", err.response?.data || err.message);
     }
-  };
+};
 
   useEffect(() => {
     const handleGetUserData = async () => {
       try {
         const response = await axios.get(`/profile/user`, { withCredentials: true });
         setUserProfile(response.data);
-        profileRef.current.src = `http://localhost:3000${response.data.img_url}` ?? defaultProfile;
+        profileRef.current.src = `http://103.52.115.175:3000${response.data.img_url}` ?? defaultProfile;
       } catch (error) {
         console.error("Error getting user data:", error);
       }
@@ -123,7 +171,7 @@ function ProfileEdit() {
               <Button>
                 <div className="flex items-center justify-center gap-x-2">
                   {isLoading && <div className="w-5 h-5 border-2 border-t-blue-500 border-gray-300 rounded-full animate-spin" />}
-                  {isLoading ? "Loading..." : "Login"}
+                  {isLoading ? "Loading..." : "Save Changes"}
                 </div>
               </Button>
             </form>

@@ -3,7 +3,6 @@ import NavItem from "./NavItem";
 import { LuHome, LuPlus, LuUser } from "react-icons/lu";
 import { LuMessageCircle } from "react-icons/lu";
 import { LuLogOut } from "react-icons/lu";
-import axios from "../lib/axios";
 
 function Navbar({ handleLogout }) {
   const id = Cookies.get("id");
@@ -45,7 +44,7 @@ function Navbar({ handleLogout }) {
       <div className="hidden md:block px-5 items-center text-white">
         <button
           onClick={handleLogout}
-          className="text-white cursor-pointer flex gap-x-3 py-2"
+          className="text-white pr-7 cursor-pointer flex gap-x-3 py-2"
         >
           <LuLogOut className="text-xl" />
           <span>Logout</span>

@@ -41,6 +41,7 @@ function EditPostForm() {
 
   const handleImageData = (e) => {
     const file = e.target.files[0];
+    console.log("Selected file:", file);
 
     if (file) {
       const reader = new FileReader();
@@ -51,12 +52,48 @@ function EditPostForm() {
 
       reader.readAsDataURL(file);
     }
-    setPost({ ...post, img_url: file });
+    setPost((prev) => {
+      console.log("Setting file to state:", file);
+      return { ...prev, img_url: file };
+    });
   };
 
   const handlePostData = (fieldName, e) => {
     setPost({ ...post, [fieldName]: e.target.value });
   };
+
+  // const handleEditPostSubmit = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     setIsLoading(true);
+  //     const formData = new FormData();
+  //     formData.append("user_id", post.user_id);
+  //     formData.append("content", post.content);
+  //     if (post.img_url) {
+  //       formData.append("img_url", post.img_url);
+  //     }
+
+  //     const response = await axios.patch(
+  //       `/post/${postId}/edit`,
+  //       formData,
+  //       { withCredentials: true },
+  //       {
+  //         headers: {
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.status === 200) {
+  //       setIsLoading(false);
+  //       navigate(`/profile/${post.user_id}`);
+  //     }
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     console.error(err);
+  //   }
+  // };
 
   const handleEditPostSubmit = async (e) => {
     e.preventDefault();
@@ -66,20 +103,22 @@ function EditPostForm() {
       const formData = new FormData();
       formData.append("user_id", post.user_id);
       formData.append("content", post.content);
+
       if (post.img_url) {
         formData.append("img_url", post.img_url);
       }
 
-      const response = await axios.patch(
-        `/post/${postId}/edit`,
-        formData,
-        { withCredentials: true },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      // Debug untuk cek isi FormData
+      for (let pair of formData.entries()) {
+        console.log("FormData content:", pair[0], pair[1]);
+      }
+
+      const response = await axios.patch(`/post/${postId}/edit`, formData, {
+        withCredentials: true,
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       if (response.status === 200) {
         setIsLoading(false);
@@ -87,9 +126,10 @@ function EditPostForm() {
       }
     } catch (err) {
       setIsLoading(false);
-      console.error(err);
+      console.error("Error details:", err.response?.data || err.message);
     }
   };
+
   return (
     <form
       onSubmit={handleEditPostSubmit}
@@ -116,7 +156,7 @@ function EditPostForm() {
       <div className="mb-5">
         <img
           ref={editImage}
-          src={`http://localhost:3000${post.img_url}`}
+          src={`http://103.52.115.175:3000${post.img_url}`}
           alt="Preview"
           // className="max-h-48"
         />

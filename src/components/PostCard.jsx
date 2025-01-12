@@ -80,7 +80,7 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
           <Link to={`/profile/${userId}`}>
             <div className="flex items-center">
               <img
-                src={profile ? `http://localhost:3000${profile}` : defaultProfile}
+                src={profile ? `http://103.52.115.175${profile}` : defaultProfile}
                 alt="profile"
                 className="w-10 h-10 rounded-full"
               />
@@ -99,7 +99,7 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
 
         <div className="w-full rounded-lg overflow-hidden">
           <img
-            src={`http://localhost:3000${img}`}
+            src={`http://103.52.115.175:3000${img}`}
             alt="post"
             className="w-full object-cover"
           />
