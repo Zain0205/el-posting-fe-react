@@ -16,21 +16,6 @@ function PostForm() {
   const image = useRef();
   const navigate = useNavigate();
 
-  // const handleImageData = (e) => {
-  //   const file = e.target.files[0];
-
-  //   if (file) {
-  //     const reader = new FileReader();
-
-  //     reader.onload = (e) => {
-  //       image.current.src = e.target.result;
-  //     };
-
-  //     reader.readAsDataURL(file);
-  //   }
-  //   setPost({ ...post, img_url: file });
-  // };
-
   const handlePostData = (fiedName, e) => {
     const temp = { ...post };
 
@@ -60,104 +45,6 @@ function PostForm() {
       });
     }
   };
-
-  // const handleImageData = (e) => {
-  //   const file = e.target.files[0];
-  //   console.log("File before setting:", file); // debugging
-
-  //   if (file) {
-  //     // Preview image
-  //     const reader = new FileReader();
-  //     reader.onload = (e) => {
-  //       image.current.src = e.target.result;
-  //     };
-  //     reader.readAsDataURL(file);
-
-  //     // Simpan file langsung, tanpa konversi
-  //     setPost((prev) => ({
-  //       ...prev,
-  //       img_url: file,
-  //     }));
-  //   }
-  // };
-
-  //   const handlePostSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     setIsLoading(true);
-  //     const formData = new FormData();
-
-  //     if (post.user_id) formData.append("user_id", post.user_id);
-  //     if (post.content) formData.append("content", post.content);
-  //     if (post.img_url) {
-  //       // Debug sebelum kirim
-  //       console.log("File size:", post.img_url.size);
-  //       console.log("File type:", post.img_url.type);
-
-  //       formData.append("img_url", post.img_url, post.img_url.name);
-  //     }
-
-  //     // Debug formData
-  //     for (let pair of formData.entries()) {
-  //       console.log('FormData content:', pair[0], pair[1]);
-  //     }
-
-  //     const response = await axios.post("/post/create", formData, {
-  //       withCredentials: true,
-  //       headers: {
-  //         'Content-Type': 'multipart/form-data'
-  //       },
-  //       maxBodyLength: Infinity, // tambahkan ini
-  //       maxContentLength: Infinity // dan ini
-  //     });
-
-  //     if (response.status === 201) {
-  //       setIsLoading(false);
-  //       navigate("/home");
-  //     }
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     console.error("Error full detail:", err);
-  //     // Log response error jika ada
-  //     if (err.response) {
-  //       console.error("Response data:", err.response.data);
-  //       console.error("Response status:", err.response.status);
-  //     }
-  //   }
-  // };
-
-  // const handlePostSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     setIsLoading(true);
-  //     const formData = new FormData();
-  //     formData.append("user_id", post.user_id);
-  //     formData.append("content", post.content);
-  //     formData.append("img_url", post.img_url);
-
-
-  //     const response = await axios.post(
-  //       "/post/create",
-  //       formData,
-  //       { withCredentials: true },
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 201) {
-  //       setIsLoading(false);
-  //       navigate("/home");
-  //     }
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     console.error(err);
-  //   }
-  // };
 
     const handlePostSubmit = async (e) => {
     e.preventDefault();

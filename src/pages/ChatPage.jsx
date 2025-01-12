@@ -12,13 +12,13 @@ import { getHourFromTimestamp } from "../lib/formater";
 
 const socket = io("/", {
   path: "/socket.io/",
-  transports: ['polling'], // Gunakan polling saja dulu untuk menghindari masalah WSS
+  transports: ["polling"], // Gunakan polling saja dulu untuk menghindari masalah WSS
   withCredentials: true,
   autoConnect: true,
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
-  reconnectionAttempts: 5
+  reconnectionAttempts: 5,
 });
 
 function ChatPage() {
@@ -120,85 +120,85 @@ function ChatPage() {
       {/* {!Cookies.get("token") ? (
         <Navigate to="/" />
       ) : ( */}
-        <section className="h-screen flex justify-between bg-background md:pl-72 ">
-          <Navbar />
-          <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 pb-20 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
-            <div className="text-white mt-2">
-              <h1 className="font-roboto px-5 text-2xl mb-2">Chat</h1>
-              {isLoading && <ChatLoader />}
-              {chatList.map((cl) => (
-                <ChatList
-                  key={cl.id}
-                  id={cl.id}
-                  img={cl.img_url}
-                  content={cl.last_message}
-                  username={cl.username}
+      <section className="h-screen flex justify-between bg-background md:pl-72 ">
+        <Navbar />
+        <div className={`border-r ${receiverId !== "inbox" ? "hidden" : "block"} border-l w-full xl:w-1/3 lg:w-2/3 h-screen overflow-scroll border-gray-900 pb-20 shadow-lg lg:flex py-3 lg:flex-col lg:py-5 lg:justify-between z-100`}>
+          <div className="text-white mt-2">
+            <h1 className="font-roboto px-5 text-2xl mb-2">Chat</h1>
+            {isLoading && <ChatLoader />}
+            {chatList.map((cl) => (
+              <ChatList
+                key={cl.id}
+                id={cl.id}
+                img={cl.img_url}
+                content={cl.last_message}
+                username={cl.username}
+              />
+            ))}
+          </div>
+        </div>
+        {receiverId == "inbox" ? (
+          <Inbox />
+        ) : (
+          <div className={`h-screen w-full lg:w-2/3 bg-gray-800 overflow-scroll`}>
+            {/* Header Chat */}
+            <div className="sticky gap-x-3 top-0 z-10 bg-gray-900 border-b border-gray-700 py-4 px-5 flex items-center">
+              <Link to="/chat/inbox">
+                <LuArrowLeft className="text-white text-2xl cursor-pointer" />
+              </Link>
+              <div className="flex items-center gap-3">
+                <img
+                  src={user.img_url ? user.img_url : defaultProfile}
+                  className="w-10 h-10 rounded-full"
+                  alt="Avatar"
+                />
+                <h1 className="text-white font-semibold">{user.username}</h1>
+              </div>
+            </div>
+
+            {/* Chat Content */}
+            <div className="py-5 px-5 min-h-[80vh] md:min-h-[89vh] lg:min-h-[80vh] space-y-4">
+              {chats.map((chat) => (
+                <BubbleChat
+                  key={chat.id}
+                  isOwn={chat.sender_id == userID}
+                  content={chat.content}
+                  sender_img={chat.sender_avatar}
+                  time={chat.created_at}
                 />
               ))}
+              <div ref={messageRef}></div>
             </div>
-          </div>
-          {receiverId == "inbox" ? (
-            <Inbox />
-          ) : (
-            <div className={`h-screen w-full lg:w-2/3 bg-gray-800 overflow-scroll`}>
-              {/* Header Chat */}
-              <div className="sticky gap-x-3 top-0 z-10 bg-gray-900 border-b border-gray-700 py-4 px-5 flex items-center">
-                <Link to="/chat/inbox">
-                  <LuArrowLeft className="text-white text-2xl cursor-pointer" />
-                </Link>
-                <div className="flex items-center gap-3">
-                  <img
-                    src={user.img_url ? `http://103.52.115.175${user.img_url}` : defaultProfile}
-                    className="w-10 h-10 rounded-full"
-                    alt="Avatar"
-                  />
-                  <h1 className="text-white font-semibold">{user.username}</h1>
-                </div>
-              </div>
 
-              {/* Chat Content */}
-              <div className="py-5 px-5 min-h-[80vh] md:min-h-[89vh] lg:min-h-[80vh] space-y-4">
-                {chats.map((chat) => (
-                  <BubbleChat
-                    key={chat.id}
-                    isOwn={chat.sender_id == userID}
-                    content={chat.content}
-                    sender_img={chat.sender_avatar}
-                    time={chat.created_at}
-                  />
-                ))}
-                <div ref={messageRef}></div>
-              </div>
-
-              {/* Input Chat */}
-              <div className="sticky bottom-0 z-50 bg-gray-900 px-5 py-3 flex items-center gap-3">
-                <textarea
-                  id="message"
-                  onChange={(e) => setMessage(e.target.value)}
-                  value={message}
-                  className="flex-1 px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-full focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-                  placeholder="Tulis pesan..."
-                  name="msg-input"
-                  cols="1"
-                  rows="1"
-                ></textarea>
-                {/* <input
+            {/* Input Chat */}
+            <div className="sticky bottom-0 z-50 bg-gray-900 px-5 py-3 flex items-center gap-3">
+              <textarea
+                id="message"
+                onChange={(e) => setMessage(e.target.value)}
+                value={message}
+                className="flex-1 px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-full focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                placeholder="Tulis pesan..."
+                name="msg-input"
+                cols="1"
+                rows="1"
+              ></textarea>
+              {/* <input
                   id="message"
                   onChange={(e) => setMessage(e.target.value)}
                   value={message}
                   className="flex-1 px-4 py-2 text-white bg-gray-700 border border-gray-600 rounded-full focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="Tulis pesan..."
                 /> */}
-                <button
-                  onClick={handleSendMessage}
-                  className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
-                >
-                  Kirim
-                </button>
-              </div>
+              <button
+                onClick={handleSendMessage}
+                className="px-4 py-2 text-white bg-blue-500 rounded-full hover:bg-blue-600"
+              >
+                Kirim
+              </button>
             </div>
-          )}
-        </section>
+          </div>
+        )}
+      </section>
       {/* )} */}
     </>
   );
@@ -211,7 +211,7 @@ function ChatList({ id, username, img, content, time }) {
         <div className="w-[15%]">
           <div>
             <img
-              src={img ? `http://103.52.115.175${img}` : defaultProfile}
+              src={img ? img : defaultProfile}
               className="w-10 h-10 rounded-full"
               alt="@shadcn"
             />

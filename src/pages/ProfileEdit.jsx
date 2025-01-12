@@ -113,7 +113,7 @@ function ProfileEdit() {
       try {
         const response = await axios.get(`/profile/user`, { withCredentials: true });
         setUserProfile(response.data);
-        profileRef.current.src = `http://103.52.115.175:3000${response.data.img_url}` ?? defaultProfile;
+        profileRef.current.src = response.data.img_url ?? defaultProfile;
       } catch (error) {
         console.error("Error getting user data:", error);
       }

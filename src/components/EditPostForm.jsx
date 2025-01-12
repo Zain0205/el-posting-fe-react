@@ -12,7 +12,6 @@ function EditPostForm() {
     img_url: null,
   });
   const [isLoading, setIsLoading] = useState(false);
-  // const [initialImage, setInitialImage] = useState(null);
 
   const editImage = useRef();
   const navigate = useNavigate();
@@ -61,39 +60,6 @@ function EditPostForm() {
   const handlePostData = (fieldName, e) => {
     setPost({ ...post, [fieldName]: e.target.value });
   };
-
-  // const handleEditPostSubmit = async (e) => {
-  //   e.preventDefault();
-
-  //   try {
-  //     setIsLoading(true);
-  //     const formData = new FormData();
-  //     formData.append("user_id", post.user_id);
-  //     formData.append("content", post.content);
-  //     if (post.img_url) {
-  //       formData.append("img_url", post.img_url);
-  //     }
-
-  //     const response = await axios.patch(
-  //       `/post/${postId}/edit`,
-  //       formData,
-  //       { withCredentials: true },
-  //       {
-  //         headers: {
-  //           "Content-Type": "multipart/form-data",
-  //         },
-  //       }
-  //     );
-
-  //     if (response.status === 200) {
-  //       setIsLoading(false);
-  //       navigate(`/profile/${post.user_id}`);
-  //     }
-  //   } catch (err) {
-  //     setIsLoading(false);
-  //     console.error(err);
-  //   }
-  // };
 
   const handleEditPostSubmit = async (e) => {
     e.preventDefault();
@@ -156,7 +122,7 @@ function EditPostForm() {
       <div className="mb-5">
         <img
           ref={editImage}
-          src={`http://103.52.115.175:3000${post.img_url}`}
+          src={post.img_url}
           alt="Preview"
           // className="max-h-48"
         />

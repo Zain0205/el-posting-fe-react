@@ -8,7 +8,7 @@ function CommentChat({ comment_id, content, sender_img, username, sender_id }) {
     <div className={`flex justify-start items-center mb-4`}>
       <div className="text-sm text-gray-500 mr-2">
         <img
-          src={sender_img ? `http://103.52.115.175${sender_img}` : defaultProfile}
+          src={sender_img ? sender_img : defaultProfile}
           className="h-10 w-10 rounded-full"
           alt=""
         />

@@ -57,7 +57,7 @@ function CommentModal({ setIsOpen, img, postId }) {
       <div className="bg-background relative w-full h-full max-w-6xl lg:h-[90%] flex shadow-lg overflow-hidden flex-col lg:flex-row">
         <div className="w-full lg:w-1/2 bg-background flex items-center justify-center">
           <img
-            src={`http://103.52.115.175${img}`}
+            src={img}
             alt="Post"
             className="w-full h-full object-contain hidden md:block"
           />{" "}
