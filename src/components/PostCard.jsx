@@ -99,7 +99,8 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
 
         <div className="w-full rounded-lg overflow-hidden">
           <img
-            src={`http://103.52.115.175${img}`}
+            // src={`http://103.52.115.175${img}`}
+            src={img}
             alt="post"
             className="w-full object-cover"
           />

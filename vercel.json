@@ -18,6 +18,10 @@
     {
       "source": "/socket.io/(.*)",
       "destination": "http://103.52.115.175/socket.io/$1"
+    },
+    {
+      "source": "/uploads/:path*",
+      "destination": "http://103.52.115.175/uploads/:path*"
     }
   ]
 }
