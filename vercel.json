@@ -22,6 +22,10 @@
     {
       "source": "/uploads/:path*",
       "destination": "http://103.52.115.175/uploads/:path*"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
