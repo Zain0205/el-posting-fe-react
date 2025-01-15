@@ -1,49 +1,69 @@
 export const formatTimeAgo = (timestamp) => {
-  // Pastikan timestamp dalam format yang benar
-  const now = new Date();
-  const timestampDate = new Date(timestamp.replace(" ", "T")); // Convert to ISO format
+  // Handle invalid or undefined input
+  if (!timestamp) {
+    return "just now";
+  }
 
-  // Validasi untuk menangani invalid date
-  if (isNaN(timestampDate.getTime())) {
+  const now = new Date();
+  let timestampDate;
+
+  try {
+    // First try parsing the timestamp directly
+    timestampDate = new Date(timestamp);
+    
+    // If that fails, try converting space to T for ISO format
+    if (isNaN(timestampDate.getTime()) && typeof timestamp === 'string') {
+      timestampDate = new Date(timestamp.replace(" ", "T"));
+    }
+    
+    // If still invalid, return early
+    if (isNaN(timestampDate.getTime())) {
+      return "just now";
+    }
+  } catch (error) {
     return "just now";
   }
 
   const timeDifference = Math.floor((now - timestampDate) / 1000); // Time difference in seconds
 
-  // Handle kasus waktu di masa depan atau perbedaan sangat kecil
-  if (Math.abs(timeDifference) < 5) {
+  // Handle very recent or future timestamps
+  if (Math.abs(timeDifference) < 5 || timeDifference < 0) {
     return "just now";
   }
 
-  // Handle kasus waktu di masa depan
-  if (timeDifference < 0) {
-    return "just now";
+  const intervals = [
+    { seconds: 29030400, label: 'year' },
+    { seconds: 2419200, label: 'month' },
+    { seconds: 604800, label: 'week' },
+    { seconds: 86400, label: 'day' },
+    { seconds: 3600, label: 'hour' },
+    { seconds: 60, label: 'minute' },
+    { seconds: 1, label: 'second' }
+  ];
+
+  for (let interval of intervals) {
+    const count = Math.floor(timeDifference / interval.seconds);
+    if (count >= 1) {
+      return `${count} ${interval.label}${count !== 1 ? 's' : ''} ago`;
+    }
   }
 
-  if (timeDifference < 60) {
-    return `${timeDifference} second${timeDifference !== 1 ? "s" : ""} ago`;
-  } else if (timeDifference < 3600) {
-    const minutes = Math.floor(timeDifference / 60);
-    return `${minutes} minute${minutes !== 1 ? "s" : ""} ago`;
-  } else if (timeDifference < 86400) {
-    const hours = Math.floor(timeDifference / 3600);
-    return `${hours} hour${hours !== 1 ? "s" : ""} ago`;
-  } else if (timeDifference < 604800) {
-    const days = Math.floor(timeDifference / 86400);
-    return `${days} day${days !== 1 ? "s" : ""} ago`;
-  } else if (timeDifference < 2419200) {
-    const weeks = Math.floor(timeDifference / 604800);
-    return `${weeks} week${weeks !== 1 ? "s" : ""} ago`;
-  } else if (timeDifference < 29030400) {
-    const months = Math.floor(timeDifference / 2419200);
-    return `${months} month${months !== 1 ? "s" : ""} ago`;
-  } else {
-    const years = Math.floor(timeDifference / 29030400);
-    return `${years} year${years !== 1 ? "s" : ""} ago`;
-  }
+  return "just now";
 };
 
 export function getHourFromTimestamp(timestamp) {
-  const date = new Date(timestamp);
-  return date.toTimeString().split(":")[0] + ":" + date.toTimeString().split(":")[1];
+  if (!timestamp) return "";
+  
+  try {
+    const date = new Date(timestamp);
+    if (isNaN(date.getTime())) return "";
+    
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  } catch (error) {
+    return "";
+  }
 }
