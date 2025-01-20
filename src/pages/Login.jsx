@@ -87,8 +87,8 @@ function Login() {
           <Input
             onChange={(e) => handleLoginData("email", e)}
             id="l-email"
-            label="Email"
-            placeholder="Email"
+            label="Username / Email"
+            placeholder="Input your username or email"
             required
           />
           <div className="relative">
