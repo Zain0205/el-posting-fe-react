@@ -18,6 +18,7 @@ function Register() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [fieldType, setFieldType] = useState("password");
+  const [verificationSent, setVerificationSent] = useState(false);
 
   const handleRegister = (fieldname, e) => {
     const temp = { ...users };
@@ -33,14 +34,54 @@ function Register() {
       setIsLoading(true);
       const response = await axios.post("/auth/register", users);
       if (response.status === 201) {
-        navigate("/");
+        setVerificationSent(true);
       }
       setIsLoading(false);
     } catch (err) {
       setIsLoading(false);
-      setError(err.response.data.message);
+      setError(err.response?.data?.message || "Registration failed");
     }
   };
+
+  // const handleSubmitRegister = async (e) => {
+  //   e.preventDefault();
+
+  //   try {
+  //     setIsLoading(true);
+  //     const response = await axios.post("/auth/register", users);
+  //     if (response.status === 201) {
+  //       navigate("/");
+  //     }
+  //     setIsLoading(false);
+  //   } catch (err) {
+  //     setIsLoading(false);
+  //     setError(err.response.data.message);
+  //   }
+  // };
+
+  if (verificationSent) {
+    return (
+      <section className="h-screen bg-background flex items-center justify-center px-5 flex-col gap-y-5">
+        <div className="text-center max-w-md text-white">
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="text-4xl mb-3 font-playWrite"
+          >
+            Check your email
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+          >
+            We've sent a verification link to {users.email}. Please check your email and click the link to verify your account.
+          </motion.p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="h-screen bg-background flex items-center justify-center px-5 flex-col gap-y-5">
