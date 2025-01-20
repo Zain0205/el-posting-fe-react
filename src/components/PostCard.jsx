@@ -14,7 +14,10 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(like);
   const [showActionModal, setShowActionModal] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
   const id = Cookies.get("id");
   const postOwner = userId == id;
 
@@ -72,10 +75,73 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
     }
   };
 
+  const handleDeletePost = async () => {
+    try {
+      const response = await axios.delete(`/post/delete/${postId}`);
+      if (response.status === 200) {
+        setShowDeleteConfirm(false);
+        setShowNotification(true);
+        setTimeout(() => {
+          navigate(`/profile/${id}`);
+        }, 2000);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <>
       <div className="mx-auto relative max-w-lg rounded-lg mt-5">
-        {showActionModal && <ActionModal postId={postId} />}
+        {/* Action Modal */}
+        {showActionModal && (
+          <div className="w-40 rounded-lg bg-gray-700 cursor-pointer text-white overflow-hidden right-0 top-16 absolute">
+            <Link to={`/post-edit/${postId}`}>
+              <div className="hover:bg-gray-800">
+                <button className="w-full p-3 text-left">Edit</button>
+              </div>
+            </Link>
+            <div className="hover:bg-gray-800">
+              <button
+                className="w-full p-3 text-left"
+                onClick={() => {
+                  setShowActionModal(false);
+                  setShowDeleteConfirm(true);
+                }}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Delete Confirmation Modal */}
+        {showDeleteConfirm && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-800 rounded-lg p-6 max-w-sm mx-4 w-full">
+              <h2 className="text-xl font-bold text-white mb-4">Delete Post</h2>
+              <p className="text-gray-300 mb-6">Are you sure you want to delete this post? This action cannot be undone.</p>
+              <div className="flex justify-end gap-4">
+                <button
+                  onClick={() => setShowDeleteConfirm(false)}
+                  className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700 transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleDeletePost}
+                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Success Notification */}
+        {showNotification && <div className="fixed top-4 right-4 bg-green-600 text-white px-6 py-3 rounded-lg shadow-lg z-50">Post deleted successfully!</div>}
+
         <div className="flex items-center justify-between py-4">
           <Link to={`/profile/${userId}`}>
             <div className="flex items-center">
@@ -134,40 +200,6 @@ function PostCard({ content, img, username, time, detail, like, profile, userId,
         </div>
       </div>
     </>
-  );
-}
-
-function ActionModal({ postId }) {
-  const navigate = useNavigate();
-  const id = Cookies.get("id");
-
-  const handleDeletePost = async () => {
-    try {
-      const response = await axios.delete(`/post/delete/${postId}`);
-      if (response.status === 200) {
-        navigate(`/profile/${id}`);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  return (
-    <div className="w-40 rounded-lg bg-gray-700 cursor-pointer text-white overflow-hidden right-0 top-16 absolute">
-      <Link to={`/post-edit/${postId}`}>
-        <div className="hover:bg-gray-800">
-          <button className="w-full p-3 text-left">Edit</button>
-        </div>
-      </Link>
-      <div className="hover:bg-gray-800">
-        <button
-          className="w-full p-3 text-left"
-          onClick={handleDeletePost}
-        >
-          Delete
-        </button>
-      </div>
-    </div>
   );
 }
 
